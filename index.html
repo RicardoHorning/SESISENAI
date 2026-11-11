@@ -656,20 +656,20 @@
     </div>
   </div>
 
-  <!-- MODAL DE CONFIRMAÇÃO DE EXCLUSÃO CUSTOMIZADO -->
+  <!-- MODAL DE CONFIRMAÇÃO DINÂMICO (BLOQUEIO / EXCLUSÃO) -->
   <div id="modal-confirmacao" class="fixed inset-0 bg-[#001122]/85 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden transition-opacity">
     <div class="bg-sesi-cardBg border border-red-700/50 rounded-2xl max-w-sm w-full p-6 space-y-4 shadow-2xl relative text-center">
       <div class="w-12 h-12 bg-red-500/10 text-red-400 rounded-full flex items-center justify-center mx-auto text-xl border border-red-500/30">
         <i class="fa-solid fa-triangle-exclamation"></i>
       </div>
-      <h3 id="modal-confirm-titulo" class="text-lg font-bold text-white">Confirmar Exclusão</h3>
-      <p id="modal-confirm-desc" class="text-xs text-slate-300">Tem certeza que deseja excluir este registro?</p>
+      <h3 id="modal-confirm-titulo" class="text-lg font-bold text-white">Confirmar Ação</h3>
+      <p id="modal-confirm-desc" class="text-xs text-slate-300">Tem certeza que deseja prosseguir?</p>
       <div class="flex gap-3 pt-2">
         <button onclick="fecharModalConfirmacao()" class="w-1/2 bg-sesi-navy hover:bg-sesi-primary text-slate-300 text-xs font-semibold py-2.5 rounded-xl border border-sesi-cardBorder transition">
           Cancelar
         </button>
-        <button id="btn-modal-confirmar-acao" class="w-1/2 bg-red-700 hover:bg-red-600 text-white text-xs font-bold py-2.5 rounded-xl transition shadow-lg">
-          Sim, Excluir
+        <button id="btn-modal-confirmar-acao" class="w-1/2 bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold py-2.5 rounded-xl transition shadow-lg">
+          Sim, Bloquear Projeto
         </button>
       </div>
     </div>
@@ -1740,45 +1740,79 @@
     // ALTERNAR BLOQUEIO POR IA / PLÁGIO (MÓDULO PROFESSOR)
     // =========================================================================
     async function alternarBloqueioEquipe(idDoc, novoStatusBloqueio) {
-      const acaoTxt = novoStatusBloqueio ? "bloquear" : "desbloquear";
-      abrirModalConfirmacao(
-        novoStatusBloqueio ? "Bloquear Projeto (IA/Plágio)" : "Desbloquear Projeto",
-        `Deseja ${acaoTxt} o projeto da equipe ${idDoc}? ${novoStatusBloqueio ? 'Os alunos visualizarão o aviso de plágio e serão orientados a reiniciar.' : 'A equipe voltará a ter acesso ao projeto.'}`,
-        async () => {
-          try {
-            if (modoFirebase) {
-              await db.collection("entregas_sesi").doc(idDoc).update({ bloqueado: novoStatusBloqueio });
-            }
+      if (novoStatusBloqueio) {
+        abrirModalConfirmacao(
+          "Bloquear Projeto (IA/Plágio)",
+          `Deseja BLOQUEAR o projeto da equipe ${idDoc}? O trabalho e os dados atuais MANTÊM-SE SALVOS no banco para registro e comprovação pedagógica, mas os alunos serão impedidos de continuar nesta versão e orientados a refazer a atividade manualmente.`,
+          async () => {
+            try {
+              if (modoFirebase) {
+                await db.collection("entregas_sesi").doc(idDoc).update({ bloqueado: true });
+              }
 
-            const itemLocal = localStorage.getItem(`sesi_app_${idDoc}`);
-            if (itemLocal) {
-              const parsed = JSON.parse(itemLocal);
-              parsed.bloqueado = novoStatusBloqueio;
-              localStorage.setItem(`sesi_app_${idDoc}`, JSON.stringify(parsed));
-            }
+              const itemLocal = localStorage.getItem(`sesi_app_${idDoc}`);
+              if (itemLocal) {
+                const parsed = JSON.parse(itemLocal);
+                parsed.bloqueado = true;
+                localStorage.setItem(`sesi_app_${idDoc}`, JSON.stringify(parsed));
+              }
 
-            showToast(`Projeto da equipe ${idDoc} ${novoStatusBloqueio ? 'bloqueado por IA/Plágio' : 'desbloqueado'}!`, novoStatusBloqueio ? "warning" : "success");
-            carregarEntregasProfessor();
-          } catch (err) {
-            console.error("Erro ao alterar bloqueio do projeto:", err);
-            showToast("Erro ao atualizar o status de bloqueio no banco.", "error");
-          }
-        }
-      );
+              showToast(`Projeto da equipe ${idDoc} bloqueado por IA/Plágio! Dados preservados no banco.`, "warning");
+              carregarEntregasProfessor();
+            } catch (err) {
+              console.error("Erro ao alterar bloqueio do projeto:", err);
+              showToast("Erro ao atualizar o status de bloqueio no banco.", "error");
+            }
+          },
+          "Sim, Bloquear Projeto",
+          "bg-amber-600 hover:bg-amber-500"
+        );
+      } else {
+        abrirModalConfirmacao(
+          "Desbloquear Projeto",
+          `Deseja DESBLOQUEAR o projeto da equipe ${idDoc}? Os alunos voltarão a ter acesso normal às respostas salvas no sistema.`,
+          async () => {
+            try {
+              if (modoFirebase) {
+                await db.collection("entregas_sesi").doc(idDoc).update({ bloqueado: false });
+              }
+
+              const itemLocal = localStorage.getItem(`sesi_app_${idDoc}`);
+              if (itemLocal) {
+                const parsed = JSON.parse(itemLocal);
+                parsed.bloqueado = false;
+                localStorage.setItem(`sesi_app_${idDoc}`, JSON.stringify(parsed));
+              }
+
+              showToast(`Projeto da equipe ${idDoc} desbloqueado com sucesso!`, "success");
+              carregarEntregasProfessor();
+            } catch (err) {
+              console.error("Erro ao alterar bloqueio do projeto:", err);
+              showToast("Erro ao atualizar o status de bloqueio no banco.", "error");
+            }
+          },
+          "Sim, Desbloquear",
+          "bg-emerald-700 hover:bg-emerald-600"
+        );
+      }
     }
 
     // =========================================================================
-    // MODAL DE CONFIRMAÇÃO DE EXCLUSÃO (INTERFACE PERSONALIZADA)
+    // MODAL DE CONFIRMAÇÃO DINÂMICO DE AÇÕES (BLOQUEIO / EXCLUSÃO)
     // =========================================================================
     let confirmacaoAcaoCallback = null;
 
-    function abrirModalConfirmacao(titulo, descricao, callback) {
+    function abrirModalConfirmacao(titulo, descricao, callback, textoBotao = "Sim, Confirmar", bgBotao = "bg-red-700 hover:bg-red-600") {
       document.getElementById('modal-confirm-titulo').innerText = titulo;
       document.getElementById('modal-confirm-desc').innerText = descricao;
+      
+      const btnConfirmar = document.getElementById('btn-modal-confirmar-acao');
+      btnConfirmar.innerText = textoBotao;
+      btnConfirmar.className = `w-1/2 text-white text-xs font-bold py-2.5 rounded-xl transition shadow-lg ${bgBotao}`;
+
       confirmacaoAcaoCallback = callback;
       document.getElementById('modal-confirmacao').classList.remove('hidden');
 
-      const btnConfirmar = document.getElementById('btn-modal-confirmar-acao');
       btnConfirmar.onclick = async () => {
         if (confirmacaoAcaoCallback) {
           await confirmacaoAcaoCallback();
@@ -1795,7 +1829,7 @@
     function excluirEquipe(idDoc) {
       abrirModalConfirmacao(
         "Excluir Equipe",
-        `Tem certeza que deseja excluir permanentemente a entrega da equipe (${idDoc}) do banco de dados?`,
+        `Tem certeza que deseja EXCLUIR PERMANENTEMENTE a entrega da equipe (${idDoc}) do banco de dados?`,
         async () => {
           try {
             if (modoFirebase) {
@@ -1808,7 +1842,9 @@
             console.error("Erro ao excluir equipe:", err);
             showToast("Erro ao excluir a equipe do banco.", "error");
           }
-        }
+        },
+        "Sim, Excluir",
+        "bg-red-700 hover:bg-red-600"
       );
     }
 
@@ -1820,7 +1856,7 @@
 
       abrirModalConfirmacao(
         "Limpar Turma Atual",
-        `Tem certeza que deseja EXCLUIR TODAS as equipes registradas para a Turma ${ano}º${turma} (${turno})?`,
+        `Tem certeza que deseja EXCLUIR PERMANENTEMENTE TODAS as equipes registradas para a Turma ${ano}º${turma} (${turno})?`,
         async () => {
           try {
             if (modoFirebase) {
@@ -1852,7 +1888,9 @@
             console.error("Erro ao limpar turma:", err);
             showToast("Erro ao excluir entregas da turma.", "error");
           }
-        }
+        },
+        "Sim, Excluir Tudo",
+        "bg-red-700 hover:bg-red-600"
       );
     }
 
