@@ -1,0 +1,1515 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SESI SENAI — Indústria do Futuro (EcoTech)</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            sesi: {
+              navy: '#002B49',      /* Azul Marinho SESI */
+              primary: '#003865',   /* Azul Oficial SESI/SENAI */
+              secondary: '#005696', /* Azul Real SENAI */
+              cyan: '#0082C8',      /* Azul Cyan Destaque */
+              lightBlue: '#E6F0FA', /* Fundo Azul Claro */
+              cardBg: '#0A192F',    /* Fundo dos Cards Dark Navy */
+              cardBorder: '#1E3A5F' /* Borda de Cards */
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- FontAwesome Icons CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Firebase Compat SDKs (v9.23.0) -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #001222;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #003865;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #005696;
+    }
+    .pulse-glow {
+      animation: pulseGlow 2s infinite;
+    }
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 15px rgba(0, 130, 200, 0.2); }
+      50% { box-shadow: 0 0 25px rgba(0, 130, 200, 0.5); }
+    }
+  </style>
+</head>
+<body class="bg-[#001222] text-slate-100 min-h-screen flex flex-col justify-between selection:bg-sky-500 selection:text-white">
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none"></div>
+
+  <!-- CABEÇALHO DA APLICAÇÃO (AZUL SESI / SENAI) -->
+  <header class="bg-sesi-navy border-b border-sesi-cardBorder shadow-xl sticky top-0 z-40 backdrop-blur-md bg-opacity-95">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+      
+      <!-- Logos e Marca SESI / SENAI -->
+      <div class="flex items-center space-x-3 cursor-pointer" onclick="voltarInicio()">
+        <div class="flex items-center bg-white px-2.5 py-1 rounded-md shadow-md gap-1">
+          <span class="text-sesi-primary font-black text-lg tracking-tighter">SESI</span>
+          <span class="text-slate-300 font-light">|</span>
+          <span class="text-sesi-secondary font-black text-lg tracking-tighter">SENAI</span>
+        </div>
+        <div>
+          <h1 class="text-sm md:text-base font-bold tracking-tight text-white leading-tight">AFONSO PENA</h1>
+          <p class="text-[11px] text-sky-400 font-medium">Desafio: Indústria do Futuro (EcoTech)</p>
+        </div>
+      </div>
+
+      <!-- Ações do Cabeçalho -->
+      <div class="flex items-center gap-2 md:gap-3">
+        <!-- Indicador de Banco de Dados -->
+        <span id="badge-db-status" class="hidden md:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-sesi-primary text-sky-200 border border-sesi-cardBorder">
+          <span class="w-2 h-2 rounded-full bg-sky-400"></span>
+          <span>Verificando Conexão...</span>
+        </span>
+
+        <!-- Botão Módulo Professor -->
+        <button onclick="abrirModalProfessor()" class="bg-sesi-primary hover:bg-sesi-secondary text-white text-xs md:text-sm px-3.5 py-2 rounded-xl border border-sky-500/30 transition flex items-center gap-2 shadow-sm active:scale-95 font-medium">
+          <i class="fa-solid fa-user-shield text-sky-400"></i>
+          <span>Módulo Professor</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTEÚDO PRINCIPAL -->
+  <main class="max-w-5xl mx-auto w-full px-4 py-6 md:py-8 flex-grow">
+
+    <!-- TELA 1: IDENTIFICAÇÃO DA EQUIPE -->
+    <section id="sec-identificacao" class="bg-sesi-cardBg rounded-2xl p-6 md:p-8 border border-sesi-cardBorder shadow-2xl relative overflow-hidden">
+      <!-- Decorativo visual -->
+      <div class="absolute -right-16 -top-16 w-64 h-64 bg-sky-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+      <div class="border-b border-sesi-cardBorder pb-5 mb-6">
+        <span class="inline-block px-3 py-1 bg-sky-500/10 text-sky-400 border border-sky-500/30 text-xs font-bold rounded-full mb-2">
+          Etapa Inicial de Entrada
+        </span>
+        <h2 class="text-2xl md:text-3xl font-extrabold text-white flex items-center gap-3">
+          <i class="fa-solid fa-users-gear text-sky-400"></i> Identificação da Equipe
+        </h2>
+        <p class="text-sm text-slate-300 mt-1">Selecione sua turma e informe o nome único da equipe. Um departamento da fábrica será atribuído automaticamente.</p>
+      </div>
+
+      <form id="form-identificacao" onsubmit="iniciarMissaoEstudante(event)" class="space-y-6">
+        
+        <!-- Grid de Seleção de Turma -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <!-- Ano -->
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Série / Ano *</label>
+            <select id="sel-ano" required class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-3 text-sm text-slate-200 focus:border-sky-400 focus:ring-1 focus:ring-sky-400 focus:outline-none transition">
+              <option value="">Selecione o Ano...</option>
+              <option value="1">1º Ano — Detetives da Informação & Nuvem</option>
+              <option value="2">2º Ano — Sustentabilidade Industrial & ESG</option>
+              <option value="3">3º Ano — Líderes do Futuro & Projeto de Vida</option>
+            </select>
+          </div>
+
+          <!-- Turno -->
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Turno *</label>
+            <select id="sel-turno" required class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-3 text-sm text-slate-200 focus:border-sky-400 focus:ring-1 focus:ring-sky-400 focus:outline-none transition">
+              <option value="">Selecione o Turno...</option>
+              <option value="M">M — Matutino</option>
+              <option value="V">V — Vespertino</option>
+              <option value="N">N — Noturno</option>
+            </select>
+          </div>
+
+          <!-- Turma -->
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Turma *</label>
+            <select id="sel-turma" required class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-3 text-sm text-slate-200 focus:border-sky-400 focus:ring-1 focus:ring-sky-400 focus:outline-none transition">
+              <option value="">Selecione a Turma...</option>
+              <option value="A">Turma A</option>
+              <option value="B">Turma B</option>
+              <option value="C">Turma C</option>
+              <option value="D">Turma D</option>
+              <option value="E">Turma E</option>
+              <option value="F">Turma F</option>
+              <option value="G">Turma G</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Nome da Equipe -->
+        <div>
+          <div class="flex justify-between items-center mb-1">
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400">Nome da Equipe *</label>
+            <span class="text-[10px] text-sky-400 font-mono">Gera o setor sorteado da fábrica</span>
+          </div>
+          <input type="text" id="inp-equipe" maxlength="8" required placeholder="Ex: ALPHA1" 
+                 class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-3 text-base text-sky-300 uppercase font-mono tracking-widest font-bold focus:border-sky-400 focus:ring-1 focus:ring-sky-400 focus:outline-none transition"
+                 oninput="this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g, ''); atualizarPreviewSetor(this.value)">
+          
+          <!-- Box Informativo de Previsualização do Setor -->
+          <div id="box-preview-setor" class="mt-2 text-xs p-3.5 rounded-xl bg-sesi-navy/80 border border-sesi-cardBorder flex items-center gap-3 text-slate-300">
+            <i class="fa-solid fa-cube text-sky-400 text-base"></i>
+            <div>
+              <span class="text-[10px] uppercase text-slate-400 block font-semibold">Departamento Atribuído</span>
+              <span id="txt-preview-setor" class="font-bold text-white">Digite o nome da equipe para sortear o setor da fábrica...</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Integrantes da Equipe -->
+        <div class="space-y-3 pt-2">
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400">
+            Integrantes da Equipe (Até 5 Pessoas) *
+          </label>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <input type="text" id="int-1" required placeholder="1. Nome Completo (Obrigatório)" class="bg-[#001222] border border-sesi-cardBorder rounded-lg p-2.5 text-xs text-slate-200 focus:border-sky-400 focus:outline-none">
+            <input type="text" id="int-2" placeholder="2. Nome Completo (Opcional)" class="bg-[#001222] border border-sesi-cardBorder rounded-lg p-2.5 text-xs text-slate-200 focus:border-sky-400 focus:outline-none">
+            <input type="text" id="int-3" placeholder="3. Nome Completo (Opcional)" class="bg-[#001222] border border-sesi-cardBorder rounded-lg p-2.5 text-xs text-slate-200 focus:border-sky-400 focus:outline-none">
+            <input type="text" id="int-4" placeholder="4. Nome Completo (Opcional)" class="bg-[#001222] border border-sesi-cardBorder rounded-lg p-2.5 text-xs text-slate-200 focus:border-sky-400 focus:outline-none">
+            <input type="text" id="int-5" placeholder="5. Nome Completo (Opcional)" class="bg-[#001222] border border-sesi-cardBorder rounded-lg p-2.5 text-xs text-slate-200 focus:border-sky-400 focus:outline-none">
+          </div>
+        </div>
+
+        <button type="submit" class="w-full bg-gradient-to-r from-sesi-primary to-sesi-secondary hover:from-sesi-secondary hover:to-sky-600 text-white font-bold py-4 rounded-xl shadow-lg transition transform active:scale-[0.99] flex items-center justify-center gap-3 text-base">
+          <i class="fa-solid fa-play text-lg"></i> Iniciar Desafio do Setor
+        </button>
+      </form>
+    </section>
+
+    <!-- TELA 2: PAINEL DO DESAFIO DO ESTUDANTE -->
+    <section id="sec-desafio" class="hidden space-y-6">
+      
+      <!-- Card de Status e Setor do Grupo -->
+      <div class="bg-sesi-cardBg rounded-2xl p-6 border border-sesi-cardBorder shadow-xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div>
+          <span id="badge-jornada-titulo" class="bg-sky-500/10 text-sky-400 border border-sky-500/30 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider inline-block mb-2"></span>
+          <h2 id="txt-equipe-titulo" class="text-2xl font-extrabold text-white"></h2>
+          <p id="txt-turma-sub" class="text-xs text-slate-300 mt-1"></p>
+        </div>
+
+        <!-- Indicadores das 3 Fases -->
+        <div class="flex flex-wrap items-center gap-2 self-stretch md:self-auto justify-between md:justify-end">
+          <div id="st-pill-dia1" class="text-xs px-3 py-1.5 rounded-xl font-semibold bg-sesi-navy text-slate-300 border border-sesi-cardBorder flex items-center gap-1.5">
+            <i class="fa-solid fa-circle-dot text-amber-400"></i> Dia 1: Pendente
+          </div>
+          <div id="st-pill-dia2" class="text-xs px-3 py-1.5 rounded-xl font-semibold bg-sesi-navy text-slate-500 border border-sesi-cardBorder flex items-center gap-1.5">
+            <i class="fa-solid fa-lock text-slate-600"></i> Dia 2: Bloqueado
+          </div>
+          <div id="st-pill-dia3" class="text-xs px-3 py-1.5 rounded-xl font-semibold bg-sesi-navy text-slate-500 border border-sesi-cardBorder flex items-center gap-1.5">
+            <i class="fa-solid fa-lock text-slate-600"></i> Dia 3 Pitch: Bloqueado
+          </div>
+        </div>
+      </div>
+
+      <!-- Banner do Departamento Atribuído à Equipe -->
+      <div id="banner-setor-atribuido" class="rounded-2xl p-6 border shadow-lg transition duration-300">
+        <!-- Preenchido via JavaScript -->
+      </div>
+
+      <!-- FORMULÁRIO DAS ETAPAS DO DESAFIO -->
+      <form id="form-missao" onsubmit="salvarRespostasEstudante(event)" class="space-y-6">
+
+        <!-- FASE 1 (DIA 1) -->
+        <div id="box-fase1" class="bg-sesi-cardBg rounded-2xl p-6 md:p-8 border border-sesi-cardBorder shadow-xl space-y-6">
+          <div class="border-b border-sesi-cardBorder pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <span class="text-xs font-bold text-sky-400 uppercase tracking-wider">Encontro 1 (35 min)</span>
+              <h3 class="text-xl font-bold text-white flex items-center gap-2 mt-0.5">
+                <i class="fa-solid fa-magnifying-glass text-sky-400"></i> FASE 1: Diagnóstico e Análise
+              </h3>
+            </div>
+            <span class="text-xs bg-sesi-navy text-slate-300 px-3 py-1 rounded-full border border-sesi-cardBorder w-fit">
+              Obrigatório para liberar Dia 2
+            </span>
+          </div>
+
+          <!-- Conteúdo dinâmico da Fase 1 -->
+          <div id="conteudo-fase1" class="space-y-6"></div>
+        </div>
+
+        <!-- FASE 2 (DIA 2) -->
+        <div id="box-fase2" class="bg-sesi-cardBg rounded-2xl p-6 md:p-8 border border-sesi-cardBorder shadow-xl space-y-6 opacity-60 pointer-events-none transition duration-300">
+          <div class="border-b border-sesi-cardBorder pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <span class="text-xs font-bold text-amber-400 uppercase tracking-wider">Encontro 2 (35 min)</span>
+              <h3 class="text-xl font-bold text-white flex items-center gap-2 mt-0.5">
+                <i class="fa-solid fa-lightbulb text-amber-400"></i> FASE 2: Decisão, Ética e Plano de Ação
+              </h3>
+            </div>
+            <span id="badge-lock-fase2" class="text-xs bg-sesi-navy text-slate-500 px-3 py-1 rounded-full border border-sesi-cardBorder w-fit">
+              <i class="fa-solid fa-lock"></i> Bloqueado (Conclua a Fase 1)
+            </span>
+          </div>
+
+          <!-- Conteúdo dinâmico da Fase 2 -->
+          <div id="conteudo-fase2" class="space-y-6"></div>
+        </div>
+
+        <!-- FASE 3 (DIA 3) — PITCH DE 3 MINUTOS -->
+        <div id="box-fase3" class="bg-sesi-cardBg rounded-2xl p-6 md:p-8 border border-sesi-cardBorder shadow-xl space-y-6 opacity-60 pointer-events-none transition duration-300">
+          <div class="border-b border-sesi-cardBorder pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <span class="text-xs font-bold text-purple-400 uppercase tracking-wider">Encontro 3 / Apresentação (3 min por equipe)</span>
+              <h3 class="text-xl font-bold text-white flex items-center gap-2 mt-0.5">
+                <i class="fa-solid fa-microphone-lines text-purple-400"></i> FASE 3: Defesa da Consultoria / Pitch de 3 Minutos
+              </h3>
+            </div>
+            <span id="badge-lock-fase3" class="text-xs bg-sesi-navy text-slate-500 px-3 py-1 rounded-full border border-sesi-cardBorder w-fit">
+              <i class="fa-solid fa-lock"></i> Bloqueado (Conclua a Fase 2)
+            </span>
+          </div>
+
+          <!-- Card de Orientações do Roteiro 3-2-1 -->
+          <div class="bg-gradient-to-r from-purple-950/40 to-sesi-navy p-5 rounded-xl border border-purple-800/40 space-y-3">
+            <h4 class="text-sm font-bold text-purple-300 flex items-center gap-2">
+              <i class="fa-solid fa-bullhorn"></i> Estrutura do Pitch Otimizado (Roteiro 3-2-1)
+            </h4>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+              <div class="bg-[#001222] p-3 rounded-lg border border-sesi-cardBorder">
+                <span class="font-bold text-sky-400 block mb-1">1. O Problema (30 seg)</span>
+                <p class="text-slate-300">Apresente o setor sorteado e o gargalo tecnológico/humano/ambiental identificado na fábrica EcoTech.</p>
+              </div>
+              <div class="bg-[#001222] p-3 rounded-lg border border-sesi-cardBorder">
+                <span class="font-bold text-amber-400 block mb-1">2. A Solução (1m30s)</span>
+                <p class="text-slate-300">Defenda a recomendação da equipe (confiabilidade de dados, ação verde ou ética no trabalho).</p>
+              </div>
+              <div class="bg-[#001222] p-3 rounded-lg border border-sesi-cardBorder">
+                <span class="font-bold text-emerald-400 block mb-1">3. O Impacto (1 min)</span>
+                <p class="text-slate-300">Demonstre o ganho para a empresa, a segurança dos arquivos e o valor para o futuro das pessoas.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Rascunho do Roteiro do Pitch -->
+          <div class="space-y-2">
+            <label class="block text-xs font-semibold text-slate-200">
+              Rascunho do Roteiro do Pitch / Pontos de Fala da Equipe:
+            </label>
+            <textarea id="q1_f3" rows="4" placeholder="Escreva aqui os pontos principais que o porta-voz da equipe falará nos 3 minutos diante da banca..." class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-3.5 text-xs text-slate-200 focus:border-purple-400 focus:outline-none"></textarea>
+          </div>
+        </div>
+
+        <!-- Barra de Botões -->
+        <div class="flex flex-col sm:flex-row gap-4 pt-2">
+          <button type="button" onclick="voltarIdentificacao()" class="sm:w-1/3 bg-sesi-navy hover:bg-sesi-primary text-slate-300 font-semibold py-3.5 rounded-xl text-sm transition border border-sesi-cardBorder">
+            <i class="fa-solid fa-arrow-left mr-2"></i> Alterar Dados / Voltar
+          </button>
+
+          <button type="submit" id="btn-salvar-resposta" class="sm:w-2/3 bg-gradient-to-r from-sesi-primary to-sesi-secondary hover:from-sesi-secondary hover:to-sky-600 text-white font-bold py-3.5 rounded-xl shadow-lg transition flex items-center justify-center gap-2 text-sm">
+            <i class="fa-solid fa-floppy-disk"></i> Salvar Respostas no Banco de Dados
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <!-- TELA 3: MÓDULO DO PROFESSOR (DASHBOARD) -->
+    <section id="sec-professor" class="hidden space-y-6">
+      
+      <div class="bg-sesi-cardBg rounded-2xl p-6 border border-sesi-cardBorder shadow-xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div>
+          <span class="bg-sky-500/10 text-sky-400 border border-sky-500/30 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider inline-block mb-1">
+            Painel de Gestão Pedagógica
+          </span>
+          <h2 class="text-2xl font-extrabold text-white flex items-center gap-2">
+            <i class="fa-solid fa-chalkboard-user text-sky-400"></i> Módulo Professor (SESI SENAI)
+          </h2>
+          <p class="text-xs text-slate-300 mt-1">
+            Usuário: <span class="text-sky-300 font-mono">ricardohorning@hotmail.com</span>
+          </p>
+        </div>
+
+        <div class="flex flex-wrap gap-2">
+          <button onclick="gerarDadosDemonstrativos()" class="text-xs bg-sesi-navy hover:bg-sesi-primary text-amber-400 border border-amber-500/30 px-3.5 py-2 rounded-xl font-medium transition flex items-center gap-1.5">
+            <i class="fa-solid fa-wand-magic-sparkles"></i> Gerar Dados de Exemplo
+          </button>
+          <button onclick="sairProfessor()" class="text-xs bg-sesi-navy hover:bg-sesi-primary text-slate-300 border border-sesi-cardBorder px-3.5 py-2 rounded-xl font-medium transition">
+            <i class="fa-solid fa-right-from-bracket mr-1"></i> Sair
+          </button>
+        </div>
+      </div>
+
+      <!-- CRONÔMETRO INTERATIVO DE PITCH DE 3 MINUTOS -->
+      <div class="bg-gradient-to-r from-sesi-navy via-[#0A192F] to-sesi-navy rounded-2xl p-6 border border-purple-500/30 shadow-2xl flex flex-col md:flex-row justify-between items-center gap-6">
+        <div class="space-y-1 text-center md:text-left">
+          <span class="text-[10px] font-bold text-purple-400 uppercase tracking-widest block">
+            <i class="fa-solid fa-stopwatch mr-1"></i> Cronômetro Oficial do Pitch
+          </span>
+          <h3 class="text-lg font-bold text-white">Banca Examinadora de Consultoria</h3>
+          <p class="text-xs text-slate-400">Tempo limite de apresentação oral por equipe: 03 minutos.</p>
+        </div>
+
+        <!-- Timer Display e Controles -->
+        <div class="flex flex-col items-center gap-3">
+          <div id="prof-timer-display" class="font-mono text-4xl md:text-5xl font-black text-purple-300 tracking-wider bg-[#001222] px-6 py-2 rounded-2xl border border-purple-500/40 shadow-inner">
+            03:00
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="iniciarTimerPitch()" id="btn-timer-start" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-4 py-2 rounded-xl transition flex items-center gap-1.5">
+              <i class="fa-solid fa-play"></i> Iniciar
+            </button>
+            <button onclick="pausarTimerPitch()" id="btn-timer-pause" class="bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold px-4 py-2 rounded-xl transition flex items-center gap-1.5">
+              <i class="fa-solid fa-pause"></i> Pausar
+            </button>
+            <button onclick="resetarTimerPitch()" class="bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs font-bold px-3 py-2 rounded-xl transition">
+              <i class="fa-solid fa-rotate-left"></i> Reset
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filtros da Turma -->
+      <div class="bg-sesi-cardBg p-5 rounded-2xl border border-sesi-cardBorder shadow-lg space-y-3">
+        <h3 class="text-xs font-semibold uppercase tracking-wider text-slate-400 flex items-center gap-2">
+          <i class="fa-solid fa-filter text-sky-400"></i> Filtrar Turma para Visualização
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div>
+            <label class="block text-[10px] font-semibold uppercase text-slate-400 mb-1">Ano / Série</label>
+            <select id="prof-filtro-ano" onchange="carregarEntregasProfessor()" class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-2.5 text-xs text-slate-200 focus:border-sky-400 focus:outline-none">
+              <option value="1">1º Ano — Detetives da Informação</option>
+              <option value="2">2º Ano — Sustentabilidade Industrial</option>
+              <option value="3">3º Ano — Líderes do Futuro</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-[10px] font-semibold uppercase text-slate-400 mb-1">Turno</label>
+            <select id="prof-filtro-turno" onchange="carregarEntregasProfessor()" class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-2.5 text-xs text-slate-200 focus:border-sky-400 focus:outline-none">
+              <option value="M">M — Matutino</option>
+              <option value="V">V — Vespertino</option>
+              <option value="N">N — Noturno</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-[10px] font-semibold uppercase text-slate-400 mb-1">Turma</label>
+            <select id="prof-filtro-turma" onchange="carregarEntregasProfessor()" class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-2.5 text-xs text-slate-200 focus:border-sky-400 focus:outline-none">
+              <option value="A">Turma A</option>
+              <option value="B">Turma B</option>
+              <option value="C">Turma C</option>
+              <option value="D">Turma D</option>
+              <option value="E">Turma E</option>
+              <option value="F">Turma F</option>
+              <option value="G">Turma G</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Container de Lista de Entregas -->
+      <div id="lista-equipes-prof" class="space-y-4">
+        <!-- Renderizado dinamicamente pelo JS -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MODAL DE LOGIN PROFESSOR -->
+  <div id="modal-prof-login" class="fixed inset-0 bg-[#001122]/85 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden transition-opacity">
+    <div class="bg-sesi-cardBg border border-sesi-cardBorder rounded-2xl max-w-md w-full p-6 md:p-8 space-y-5 shadow-2xl relative">
+      
+      <button onclick="fecharModalProfessor()" class="absolute top-4 right-4 text-slate-400 hover:text-white">
+        <i class="fa-solid fa-xmark text-lg"></i>
+      </button>
+
+      <div class="text-center space-y-1">
+        <div class="w-12 h-12 bg-sky-500/10 text-sky-400 rounded-full flex items-center justify-center mx-auto text-xl mb-3 border border-sky-500/30">
+          <i class="fa-solid fa-user-lock"></i>
+        </div>
+        <h3 class="text-xl font-bold text-white">Acesso do Professor</h3>
+        <p class="text-xs text-slate-400">Insira suas credenciais para gerenciar a turma.</p>
+      </div>
+
+      <form onsubmit="autenticarProfessor(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">E-mail Cadastrado</label>
+          <input type="email" id="login-email" required value="ricardohorning@hotmail.com" 
+                 class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-3 text-sm text-slate-200 focus:border-sky-400 focus:outline-none">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Senha de Acesso</label>
+          <input type="password" id="login-senha" required placeholder="••••••••" 
+                 class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-3 text-sm text-slate-200 focus:border-sky-400 focus:outline-none">
+        </div>
+
+        <div class="flex gap-3 pt-2">
+          <button type="button" onclick="fecharModalProfessor()" class="w-1/2 bg-sesi-navy hover:bg-sesi-primary text-slate-300 text-xs font-semibold py-3 rounded-xl transition border border-sesi-cardBorder">
+            Cancelar
+          </button>
+          <button type="submit" class="w-1/2 bg-gradient-to-r from-sesi-primary to-sesi-secondary hover:from-sesi-secondary hover:to-sky-600 text-white text-xs font-bold py-3 rounded-xl transition shadow-lg">
+            Acessar Módulo
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- RODAPÉ -->
+  <footer class="bg-sesi-navy border-t border-sesi-cardBorder text-center py-4 text-xs text-slate-400">
+    <div class="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-2">
+      <div class="flex items-center gap-2">
+        <span class="font-bold text-white">SESI SENAI Afonso Pena</span>
+        <span>&bull;</span>
+        <span>Metodologia Ativa PBL (3 Fases)</span>
+      </div>
+      <p class="text-slate-400">Indústria 4.0 &bull; Sustentabilidade &bull; Ética Digital &bull; Pitch Oratória</p>
+    </div>
+  </footer>
+
+  <!-- LÓGICA E BANCO DE DADOS -->
+  <script>
+    // =========================================================================
+    // CREDENCIAIS OFICIAIS DO FIREBASE DO PROFESSOR (SESI AFONSO PENA)
+    // =========================================================================
+    const firebaseConfig = {
+      apiKey: "AIzaSyAolJhiowMfW5wfhyPFsrkrEEH8DKoXFc0",
+      authDomain: "sesi-afonsopena-desafio.firebaseapp.com",
+      projectId: "sesi-afonsopena-desafio",
+      storageBucket: "sesi-afonsopena-desafio.firebasestorage.app",
+      messagingSenderId: "235296821437",
+      appId: "1:235296821437:web:630631bec6de7c36a1e7d4"
+    };
+
+    let db = null;
+    let modoFirebase = false;
+
+    try {
+      if (firebaseConfig.apiKey && firebaseConfig.apiKey !== "SUA_API_KEY_AQUI") {
+        firebase.initializeApp(firebaseConfig);
+        db = firebase.firestore();
+        modoFirebase = true;
+      }
+    } catch (e) {
+      console.warn("Modo local ativo.");
+    }
+
+    let equipeSessao = null;
+
+    // GERADOR DETERMINÍSTICO DE DEPARTAMENTO POR HASH DO NOME DA EQUIPE
+    function obterSetorFabrica(nomeEquipe) {
+      if (!nomeEquipe || nomeEquipe.trim() === '') return null;
+      let hash = 0;
+      const str = nomeEquipe.toUpperCase().trim();
+      for (let i = 0; i < str.length; i++) {
+        hash = str.charCodeAt(i) + ((hash << 5) - hash);
+      }
+      const index = Math.abs(hash) % 4;
+
+      const setores = [
+        {
+          id: 'A',
+          nome: 'Setor A: Linha de Montagem e Usinagem (Robótica)',
+          icone: 'fa-robot',
+          bgClass: 'bg-blue-950/40 border-blue-600/40 text-blue-200',
+          badgeClass: 'bg-blue-600 text-white',
+          desc: 'Linha automatizada com braços robóticos, torno CNC e células flexíveis de manufatura.'
+        },
+        {
+          id: 'B',
+          nome: 'Setor B: Logística & Almoxarifado Inteligente',
+          icone: 'fa-boxes-packing',
+          bgClass: 'bg-cyan-950/40 border-cyan-600/40 text-cyan-200',
+          badgeClass: 'bg-cyan-600 text-white',
+          desc: 'Gestão de estoque com sensores RFID, veículos autônomos (AGVs) e expedição.'
+        },
+        {
+          id: 'C',
+          nome: 'Setor C: Recursos Humanos & Segurança do Trabalho',
+          icone: 'fa-user-group',
+          bgClass: 'bg-sky-950/40 border-sky-600/40 text-sky-200',
+          badgeClass: 'bg-sky-600 text-white',
+          desc: 'Gestão de pessoas, treinamento de competências industriais e saúde ocupacional.'
+        },
+        {
+          id: 'D',
+          nome: 'Setor D: Manutenção & Eficiência Energética',
+          icone: 'fa-bolt',
+          bgClass: 'bg-indigo-950/40 border-indigo-600/40 text-indigo-200',
+          badgeClass: 'bg-indigo-600 text-white',
+          desc: 'Manutenção preditiva com sensores IoT, gestão de utilidades e matriz limpa.'
+        }
+      ];
+
+      return setores[index];
+    }
+
+    function atualizarPreviewSetor(valor) {
+      const txt = document.getElementById('txt-preview-setor');
+      const setor = obterSetorFabrica(valor);
+      if (setor) {
+        txt.innerHTML = `<i class="fa-solid ${setor.icone} text-sky-400 mr-1"></i> <strong>${setor.nome}</strong>`;
+      } else {
+        txt.innerText = 'Digite o nome da equipe para sortear o setor da fábrica...';
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      atualizarBadgeDatabase();
+    });
+
+    function atualizarBadgeDatabase() {
+      const badge = document.getElementById('badge-db-status');
+      if (modoFirebase) {
+        badge.className = "hidden md:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-950 text-emerald-300 border border-emerald-800";
+        badge.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span><span>Firebase Conectado</span>`;
+      } else {
+        badge.className = "hidden md:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-sesi-primary text-sky-200 border border-sesi-cardBorder";
+        badge.innerHTML = `<span class="w-2 h-2 rounded-full bg-sky-400"></span><span>Armazenamento Local Ativo</span>`;
+      }
+    }
+
+    function showToast(mensagem, tipo = 'info') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      
+      const cores = {
+        success: 'bg-emerald-950 border-emerald-700 text-emerald-200',
+        error: 'bg-red-950 border-red-700 text-red-200',
+        info: 'bg-sesi-navy border-sesi-cardBorder text-slate-200',
+        warning: 'bg-amber-950 border-amber-700 text-amber-200'
+      };
+
+      const icones = {
+        success: 'fa-circle-check text-emerald-400',
+        error: 'fa-circle-xmark text-red-400',
+        info: 'fa-circle-info text-sky-400',
+        warning: 'fa-triangle-exclamation text-amber-400'
+      };
+
+      toast.className = `p-4 rounded-xl border shadow-xl text-xs flex items-center gap-3 transition duration-300 transform translate-y-2 pointer-events-auto ${cores[tipo] || cores.info}`;
+      toast.innerHTML = `
+        <i class="fa-solid ${icones[tipo] || icones.info} text-base"></i>
+        <div class="flex-grow font-medium">${mensagem}</div>
+        <button onclick="this.parentElement.remove()" class="opacity-60 hover:opacity-100"><i class="fa-solid fa-xmark"></i></button>
+      `;
+
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.classList.add('opacity-0', '-translate-y-2');
+        setTimeout(() => toast.remove(), 300);
+      }, 4000);
+    }
+
+    function abrirModalProfessor() {
+      document.getElementById('modal-prof-login').classList.remove('hidden');
+    }
+
+    function fecharModalProfessor() {
+      document.getElementById('modal-prof-login').classList.add('hidden');
+    }
+
+    function voltarInicio() {
+      document.getElementById('sec-desafio').classList.add('hidden');
+      document.getElementById('sec-professor').classList.add('hidden');
+      document.getElementById('sec-identificacao').classList.remove('hidden');
+    }
+
+    function autenticarProfessor(e) {
+      e.preventDefault();
+      const email = document.getElementById('login-email').value;
+      const senha = document.getElementById('login-senha').value;
+
+      if (email === "ricardohorning@hotmail.com" && senha === "SENAI2026") {
+        fecharModalProfessor();
+        document.getElementById('sec-identificacao').classList.add('hidden');
+        document.getElementById('sec-desafio').classList.add('hidden');
+        document.getElementById('sec-professor').classList.remove('hidden');
+        showToast("Acesso liberado. Bem-vindo, Professor Ricardo!", "success");
+        carregarEntregasProfessor();
+      } else {
+        showToast("Credenciais de acesso incorretas.", "error");
+      }
+    }
+
+    function sairProfessor() {
+      document.getElementById('sec-professor').classList.add('hidden');
+      document.getElementById('sec-identificacao').classList.remove('hidden');
+    }
+
+    async function iniciarMissaoEstudante(e) {
+      e.preventDefault();
+
+      const ano = document.getElementById('sel-ano').value;
+      const turno = document.getElementById('sel-turno').value;
+      const turma = document.getElementById('sel-turma').value;
+      const equipe = document.getElementById('inp-equipe').value.toUpperCase().trim();
+
+      const integrantes = [
+        document.getElementById('int-1').value,
+        document.getElementById('int-2').value,
+        document.getElementById('int-3').value,
+        document.getElementById('int-4').value,
+        document.getElementById('int-5').value
+      ].filter(i => i.trim() !== "");
+
+      if (integrantes.length === 0) {
+        showToast("Preencha ao menos o nome do primeiro integrante.", "warning");
+        return;
+      }
+
+      const setorObj = obterSetorFabrica(equipe);
+
+      const idDoc = `${ano}_${turno}_${turma}_${equipe}`;
+      const chaveTurma = `${ano}_${turno}_${turma}`;
+
+      equipeSessao = {
+        idDoc,
+        chaveTurma,
+        ano,
+        turno,
+        turma,
+        equipe,
+        setorId: setorObj.id,
+        setorNome: setorObj.nome,
+        integrantes,
+        dia1: { concluido: false, respostas: {} },
+        dia2: { concluido: false, respostas: {} },
+        dia3: { concluido: false, respostas: {} }
+      };
+
+      let dadosSalvos = null;
+      if (modoFirebase) {
+        try {
+          const docRef = await db.collection("entregas_sesi").doc(idDoc).get();
+          if (docRef.exists) dadosSalvos = docRef.data();
+        } catch (err) {
+          console.error("Erro no Firestore:", err);
+        }
+      } else {
+        const local = localStorage.getItem(`sesi_app_${idDoc}`);
+        if (local) dadosSalvos = JSON.parse(local);
+      }
+
+      if (dadosSalvos) {
+        equipeSessao = dadosSalvos;
+        showToast(`Progresso recarregado para a equipe ${equipe}!`, "info");
+      } else {
+        showToast(`Equipe ${equipe} alocada no ${setorObj.nome}!`, "success");
+      }
+
+      renderizarPainelDesafio();
+    }
+
+    function renderizarPainelDesafio() {
+      document.getElementById('sec-identificacao').classList.add('hidden');
+      document.getElementById('sec-desafio').classList.remove('hidden');
+
+      const titulosJornada = {
+        "1": "1º ANO — DETETIVES DA INFORMAÇÃO & NUVEM",
+        "2": "2º ANO — SUSTENTABILIDADE INDUSTRIAL & ESG",
+        "3": "3º ANO — LÍDERES DO FUTURO & PROJETO DE VIDA"
+      };
+
+      document.getElementById('badge-jornada-titulo').innerText = titulosJornada[equipeSessao.ano];
+      document.getElementById('txt-equipe-titulo').innerText = `EQUIPE: ${equipeSessao.equipe}`;
+      document.getElementById('txt-turma-sub').innerText = `Turma: ${equipeSessao.ano}º ${equipeSessao.turma} (${equipeSessao.turno}) | Integrantes: ${equipeSessao.integrantes.join(", ")}`;
+
+      // Renderiza Banner do Setor Atribuído
+      const setorObj = obterSetorFabrica(equipeSessao.equipe);
+      const bannerSetor = document.getElementById('banner-setor-atribuido');
+      bannerSetor.className = `rounded-2xl p-6 border shadow-lg ${setorObj.bgClass}`;
+      bannerSetor.innerHTML = `
+        <div class="flex items-start gap-4">
+          <div class="p-3 ${setorObj.badgeClass} rounded-xl text-xl hidden sm:block">
+            <i class="fa-solid ${setorObj.icone}"></i>
+          </div>
+          <div>
+            <span class="text-[10px] font-bold uppercase tracking-widest text-sky-400 block mb-1">
+              <i class="fa-solid fa-building-user"></i> Departamento Atribuído à Sua Equipe
+            </span>
+            <h3 class="text-lg font-bold text-white flex items-center gap-2">
+              <i class="fa-solid ${setorObj.icone} sm:hidden"></i> ${setorObj.nome}
+            </h3>
+            <p class="text-xs text-slate-300 leading-relaxed mt-1">
+              ${setorObj.desc} Toda a investigação da equipe será focada neste cenário industrial específico.
+            </p>
+          </div>
+        </div>
+      `;
+
+      // Atualiza Pílulas de Status e Bloqueios
+      const pillD1 = document.getElementById('st-pill-dia1');
+      const pillD2 = document.getElementById('st-pill-dia2');
+      const pillD3 = document.getElementById('st-pill-dia3');
+
+      const boxF2 = document.getElementById('box-fase2');
+      const boxF3 = document.getElementById('box-fase3');
+
+      const badgeLockF2 = document.getElementById('badge-lock-fase2');
+      const badgeLockF3 = document.getElementById('badge-lock-fase3');
+
+      // DIA 1
+      if (equipeSessao.dia1 && equipeSessao.dia1.concluido) {
+        pillD1.className = "text-xs px-3 py-1.5 rounded-xl font-semibold bg-emerald-950 text-emerald-300 border border-emerald-800 flex items-center gap-1.5";
+        pillD1.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-400"></i> Dia 1: Concluído`;
+
+        pillD2.className = "text-xs px-3 py-1.5 rounded-xl font-semibold bg-amber-950 text-amber-300 border border-amber-800 flex items-center gap-1.5";
+        pillD2.innerHTML = `<i class="fa-solid fa-lock-open text-amber-400"></i> Dia 2: Liberado`;
+
+        boxF2.classList.remove('opacity-60', 'pointer-events-none');
+        badgeLockF2.className = "text-xs bg-amber-500/10 text-amber-400 px-3 py-1 rounded-full border border-amber-500/30 w-fit";
+        badgeLockF2.innerHTML = `<i class="fa-solid fa-unlock"></i> Liberado para Resposta`;
+      } else {
+        pillD1.className = "text-xs px-3 py-1.5 rounded-xl font-semibold bg-sesi-navy text-slate-300 border border-sesi-cardBorder flex items-center gap-1.5";
+        pillD1.innerHTML = `<i class="fa-solid fa-clock text-amber-400"></i> Dia 1: Em Andamento`;
+
+        pillD2.className = "text-xs px-3 py-1.5 rounded-xl font-semibold bg-sesi-navy text-slate-500 border border-sesi-cardBorder flex items-center gap-1.5";
+        pillD2.innerHTML = `<i class="fa-solid fa-lock text-slate-600"></i> Dia 2: Bloqueado`;
+
+        boxF2.classList.add('opacity-60', 'pointer-events-none');
+        badgeLockF2.className = "text-xs bg-sesi-navy text-slate-500 px-3 py-1 rounded-full border border-sesi-cardBorder w-fit";
+        badgeLockF2.innerHTML = `<i class="fa-solid fa-lock"></i> Bloqueado (Conclua o Dia 1)`;
+      }
+
+      // DIA 2
+      if (equipeSessao.dia2 && equipeSessao.dia2.concluido) {
+        pillD2.className = "text-xs px-3 py-1.5 rounded-xl font-semibold bg-emerald-950 text-emerald-300 border border-emerald-800 flex items-center gap-1.5";
+        pillD2.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-400"></i> Dia 2: Concluído`;
+
+        pillD3.className = "text-xs px-3 py-1.5 rounded-xl font-semibold bg-purple-950 text-purple-300 border border-purple-800 flex items-center gap-1.5";
+        pillD3.innerHTML = `<i class="fa-solid fa-lock-open text-purple-400"></i> Dia 3 Pitch: Liberado`;
+
+        boxF3.classList.remove('opacity-60', 'pointer-events-none');
+        badgeLockF3.className = "text-xs bg-purple-500/10 text-purple-400 px-3 py-1 rounded-full border border-purple-500/30 w-fit";
+        badgeLockF3.innerHTML = `<i class="fa-solid fa-unlock"></i> Liberado para o Pitch`;
+      } else {
+        pillD3.className = "text-xs px-3 py-1.5 rounded-xl font-semibold bg-sesi-navy text-slate-500 border border-sesi-cardBorder flex items-center gap-1.5";
+        pillD3.innerHTML = `<i class="fa-solid fa-lock text-slate-600"></i> Dia 3 Pitch: Bloqueado`;
+
+        boxF3.classList.add('opacity-60', 'pointer-events-none');
+        badgeLockF3.className = "text-xs bg-sesi-navy text-slate-500 px-3 py-1 rounded-full border border-sesi-cardBorder w-fit";
+        badgeLockF3.innerHTML = `<i class="fa-solid fa-lock"></i> Bloqueado (Conclua o Dia 2)`;
+      }
+
+      // DIA 3
+      if (equipeSessao.dia3 && equipeSessao.dia3.concluido) {
+        pillD3.className = "text-xs px-3 py-1.5 rounded-xl font-semibold bg-emerald-950 text-emerald-300 border border-emerald-800 flex items-center gap-1.5";
+        pillD3.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-400"></i> Pitch Concluído`;
+      }
+
+      montarFormularioEspecifico(equipeSessao.ano, setorObj.id);
+    }
+
+    // MONTA PERGUNTAS ESPECÍFICAS PARA CADA COMBINAÇÃO DE ANO + SETOR
+    function montarFormularioEspecifico(ano, setorId) {
+      const f1 = document.getElementById('conteudo-fase1');
+      const f2 = document.getElementById('conteudo-fase2');
+
+      // CONTEÚDO 1º ANO
+      if (ano === "1") {
+        if (setorId === 'A') {
+          f1.innerHTML = `
+            <div class="space-y-2">
+              <label class="block text-xs font-semibold text-slate-200">1.1 Infraestrutura Digital no Setor de Montagem (V/F):</label>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                • A Internet é o cabeamento/rede física que conecta o torno CNC ao servidor; a WWW é a interface web dos manuais.<br>
+                • Usar aspas na busca (ex: <em>"calibração robô Kuka"</em>) ajuda a filtrar manuais exatos no Google.
+              </p>
+              <input type="text" id="q1_f1" required placeholder="Responda se é V ou F e comente brevemente..." class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-3 text-xs text-slate-200 focus:border-sky-400 focus:outline-none">
+            </div>
+            <div class="space-y-2">
+              <label class="block text-xs font-semibold text-slate-200">1.2 Checagem de Confiabilidade — Linha de Usinagem:</label>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                Surgiu um vídeo afirmando: <em>"Nova garra robótica usa IA sem precisar de nenhuma calibração prévia ou manutenção em qualquer fábrica."</em><br>
+                Qual a confiabilidade desta fonte? Quais passos a equipe deve seguir para validar a procedência desse equipamento industrial?
+              </p>
+              <textarea id="q2_f1" rows="3" required placeholder="Análise de autoria, data e fontes oficiais..." class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-3 text-xs text-slate-200 focus:border-sky-400 focus:outline-none"></textarea>
+            </div>
+          `;
+          f2.innerHTML = `
+            <div class="space-y-2">
+              <label class="block text-xs font-semibold text-slate-200">2.1 Direitos Autorais & Código de Programação:</label>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                A equipe encontrou um firmware de robô em um fórum aberto. Pode colar diretamente no relatório da EcoTech como se fosse criação própria? Explique os riscos de plágio técnico.
+              </p>
+              <textarea id="q1_f2" rows="3" placeholder="Sua explicação..." class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-3 text-xs text-slate-200 focus:border-amber-400 focus:outline-none"></textarea>
+            </div>
+            <div class="space-y-2">
+              <label class="block text-xs font-semibold text-slate-200">2.2 Nuvem & Segurança do Setor A:</label>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                Como configurar o compartilhamento em nuvem dos manuais dos robôs para que a engenharia possa <em>editar</em>, mas os operadores possam apenas <em>visualizar</em>?
+              </p>
+              <textarea id="q2_f2" rows="3" placeholder="Sua resposta..." class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-3 text-xs text-slate-200 focus:border-amber-400 focus:outline-none"></textarea>
+            </div>
+          `;
+        } else if (setorId === 'B') {
+          f1.innerHTML = `
+            <div class="space-y-2">
+              <label class="block text-xs font-semibold text-slate-200">1.1 Pesquisa Eficiente em Logística (V/F):</label>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                • Motores de busca (Google/Bing) e Navegadores (Chrome/Edge) realizam exatamente a mesma função no computador.<br>
+                • O operador de almoxarifado pode usar filtros de data para encontrar tabelas de frete atualizadas neste mês.
+              </p>
+              <input type="text" id="q1_f1" required placeholder="Responda se é V ou F e justifique..." class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-3 text-xs text-slate-200 focus:border-sky-400 focus:outline-none">
+            </div>
+            <div class="space-y-2">
+              <label class="block text-xs font-semibold text-slate-200">1.2 Notícia Falsa no Almoxarifado Inteligente:</label>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                Um blog não verificado publicou: <em>"Caminhões autônomos de entrega serão obrigatórios por lei em todas as indústrias brasileiras a partir do mês que vem."</em><br>
+                Analise por que essa informação é sensacionalista ou falsa.
+              </p>
+              <textarea id="q2_f1" rows="3" required placeholder="Avalie autoria, origem e lógica da notícia..." class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-3 text-xs text-slate-200 focus:border-sky-400 focus:outline-none"></textarea>
+            </div>
+          `;
+          f2.innerHTML = `
+            <div class="space-y-2">
+              <label class="block text-xs font-semibold text-slate-200">2.1 Direitos Autorais & Tabelas de Dados:</label>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                A equipe baixou um mapa logístico corporativo da internet. Como dar os devidos créditos e citar a fonte no parecer final?
+              </p>
+              <textarea id="q1_f2" rows="3" placeholder="Sua resposta..." class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-3 text-xs text-slate-200 focus:border-amber-400 focus:outline-none"></textarea>
+            </div>
+            <div class="space-y-2">
+              <label class="block text-xs font-semibold text-slate-200">2.2 Segurança de Estoque na Nuvem:</label>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                A planilha de inventário do almoxarifado foi salva na nuvem. Quais permissões conceder a fornecedores externos para evitar vazamento de dados estratégicos?
+              </p>
+              <textarea id="q2_f2" rows="3" placeholder="Sua resposta..." class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-3 text-xs text-slate-200 focus:border-amber-400 focus:outline-none"></textarea>
+            </div>
+          `;
+        } else if (setorId === 'C') {
+          f1.innerHTML = `
+            <div class="space-y-2">
+              <label class="block text-xs font-semibold text-slate-200">1.1 Pesquisa Digital no RH (V/F):</label>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                • A Internet conecta o servidor do RH aos bancos de dados de cursos; a WWW é a coleção de páginas desses cursos.<br>
+                • O uso de termos entre aspas (ex: <em>"norma NR-12 atualizada"</em>) reduz resultados irrelevantes.
+              </p>
+              <input type="text" id="q1_f1" required placeholder="Responda se é V ou F..." class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-3 text-xs text-slate-200 focus:border-sky-400 focus:outline-none">
+            </div>
+            <div class="space-y-2">
+              <label class="block text-xs font-semibold text-slate-200">1.2 Boato em Redes Sociais no RH:</label>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                Uma mensagem de aplicativo sem link oficial diz: <em>"Todos os exames médicos dos trabalhadores devem ser gravados em aplicativo de terceiro não auditado."</em><br>
+                Como verificar a origem e evitar espalhar desinformação dentro da empresa?
+              </p>
+              <textarea id="q2_f1" rows="3" required placeholder="Passos para verificação de autoria e segurança..." class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-3 text-xs text-slate-200 focus:border-sky-400 focus:outline-none"></textarea>
+            </div>
+          `;
+          f2.innerHTML = `
+            <div class="space-y-2">
+              <label class="block text-xs font-semibold text-slate-200">2.1 Uso Ético de Materiais de Treinamento:</label>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                A equipe usará slides de um professor famoso encontrados na web para treinar os colaboradores. É permitido remover a logomarca do autor? Explique.
+              </p>
+              <textarea id="q1_f2" rows="3" placeholder="Sua resposta..." class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-3 text-xs text-slate-200 focus:border-amber-400 focus:outline-none"></textarea>
+            </div>
+            <div class="space-y-2">
+              <label class="block text-xs font-semibold text-slate-200">2.2 LGPD & Nuvem no Setor de RH:</label>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                Documentos com dados pessoais de funcionários guardados na nuvem. Quais cuidados tomar para restringir o acesso apenas aos gestores autorizados?
+              </p>
+              <textarea id="q2_f2" rows="3" placeholder="Sua resposta..." class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-3 text-xs text-slate-200 focus:border-amber-400 focus:outline-none"></textarea>
+            </div>
+          `;
+        } else {
+          f1.innerHTML = `
+            <div class="space-y-2">
+              <label class="block text-xs font-semibold text-slate-200">1.1 Pesquisa Técnica na Manutenção (V/F):</label>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                • Google e Bing são navegadores de internet instalados no computador da oficina de manutenção.<br>
+                • Consultar manuais em sites oficiais do fabricante é mais seguro do que em fóruns abertos.
+              </p>
+              <input type="text" id="q1_f1" required placeholder="Responda se é V ou F..." class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-3 text-xs text-slate-200 focus:border-sky-400 focus:outline-none">
+            </div>
+            <div class="space-y-2">
+              <label class="block text-xs font-semibold text-slate-200">1.2 Fake News sobre Eficiência Energética:</label>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                Um artigo sem data promete: <em>"Aparelho caseiro reduz 90% da conta de luz industrial sem alterar nada na fábrica."</em><br>
+                Por que essa afirmação desrespeita princípios da física e da checagem de fatos?
+              </p>
+              <textarea id="q2_f1" rows="3" required placeholder="Análise técnica e de fonte..." class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-3 text-xs text-slate-200 focus:border-sky-400 focus:outline-none"></textarea>
+            </div>
+          `;
+          f2.innerHTML = `
+            <div class="space-y-2">
+              <label class="block text-xs font-semibold text-slate-200">2.1 Direitos Autorais & Diagramas Elétricos:</label>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                Ao copiar um esquema elétrico da internet para o manual interno da EcoTech, como registrar as referências bibliográficas do autor original?
+              </p>
+              <textarea id="q1_f2" rows="3" placeholder="Sua resposta..." class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-3 text-xs text-slate-200 focus:border-amber-400 focus:outline-none"></textarea>
+            </div>
+            <div class="space-y-2">
+              <label class="block text-xs font-semibold text-slate-200">2.2 Nuvem & Manutenção Preditiva:</label>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                Os relatórios de sensores da subestação são salvos em nuvem. Que tipos de permissão de acesso garantem a integridade dos históricos contra exclusões acidentais?
+              </p>
+              <textarea id="q2_f2" rows="3" placeholder="Sua resposta..." class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-3 text-xs text-slate-200 focus:border-amber-400 focus:outline-none"></textarea>
+            </div>
+          `;
+        }
+      } 
+      // CONTEÚDO 2º ANO (SUSTENTABILIDADE)
+      else if (ano === "2") {
+        if (setorId === 'A') {
+          f1.innerHTML = `
+            <div class="space-y-2">
+              <label class="block text-xs font-semibold text-slate-200">1.1 Diagnóstico de Desperdício na Usinagem:</label>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                Na linha de usinagem, há grande descarte de cavacos de metal e óleo solúvel contaminado. Qual o impacto ambiental e financeiro desse descarte incorreto?
+              </p>
+              <textarea id="q1_f1" rows="3" required placeholder="Análise de resíduos no Setor A..." class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-3 text-xs text-slate-200 focus:border-sky-400 focus:outline-none"></textarea>
+            </div>
+            <div class="space-y-2">
+              <label class="block text-xs font-semibold text-slate-200">1.2 Economia Circular na Usinagem:</label>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                Proponha 2 ações práticas para reenviar cavacos de alumínio/aço para fundições parceiras e filtragem/reutilização de lubrificantes.
+              </p>
+              <textarea id="q2_f1" rows="3" required placeholder="Propostas de reutilização..." class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-3 text-xs text-slate-200 focus:border-sky-400 focus:outline-none"></textarea>
+            </div>
+          `;
+          f2.innerHTML = `
+            <div class="space-y-2">
+              <label class="block text-xs font-semibold text-slate-200">2.1 Retorno Financeiro & Ecoeficiência:</label>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                Como provar para a diretoria que vender retalhos metálicos e reutilizar óleos reduz a compra de insumos virgens e melhora a margem de lucro da produção?
+              </p>
+              <textarea id="q1_f2" rows="3" placeholder="Justificativa econômica..." class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-3 text-xs text-slate-200 focus:border-amber-400 focus:outline-none"></textarea>
+            </div>
+          `;
+        } else if (setorId === 'B') {
+          f1.innerHTML = `
+            <div class="space-y-2">
+              <label class="block text-xs font-semibold text-slate-200">1.1 Pegada Ecológica no Almoxarifado:</label>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                O almoxarifado usa milhares de caixas de papelão descartáveis e filme plástico bolha por mês. Como isso afeta a pegada de carbono da logística?
+              </p>
+              <textarea id="q1_f1" rows="3" required placeholder="Análise ambiental da embalagem..." class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-3 text-xs text-slate-200 focus:border-sky-400 focus:outline-none"></textarea>
+            </div>
+            <div class="space-y-2">
+              <label class="block text-xs font-semibold text-slate-200">1.2 Logística Reversa & Embalagens Verdes:</label>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                Proponha 2 soluções sustentáveis (ex: caixas plásticas retornáveis entre fornecedores e empilhadeiras elétricas recarregáveis por energia solar).
+              </p>
+              <textarea id="q2_f1" rows="3" required placeholder="Ações verdes para logística..." class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-3 text-xs text-slate-200 focus:border-sky-400 focus:outline-none"></textarea>
+            </div>
+          `;
+          f2.innerHTML = `
+            <div class="space-y-2">
+              <label class="block text-xs font-semibold text-slate-200">2.1 Indicadores ESG na Cadeia de Suprimentos:</label>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                Como a adoção de embalagens reutilizáveis atrai clientes exigentes que buscam fornecedores com certificação ambiental?
+              </p>
+              <textarea id="q1_f2" rows="3" placeholder="Justificativa comercial..." class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-3 text-xs text-slate-200 focus:border-amber-400 focus:outline-none"></textarea>
+            </div>
+          `;
+        } else if (setorId === 'C') {
+          f1.innerHTML = `
+            <div class="space-y-2">
+              <label class="block text-xs font-semibold text-slate-200">1.1 Desperdício de Insumos de Escritório e RH:</label>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                O RH imprime milhares de folhas de papel para folhas de ponto e apostilas e consome copos plásticos descartáveis nos treinamentos. Qual o diagnóstico?
+              </p>
+              <textarea id="q1_f1" rows="3" required placeholder="Análise do desperdício no RH..." class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-3 text-xs text-slate-200 focus:border-sky-400 focus:outline-none"></textarea>
+            </div>
+            <div class="space-y-2">
+              <label class="block text-xs font-semibold text-slate-200">1.2 Cultura de Sustentabilidade Interna:</label>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                Proponha 2 projetos de conscientização (ex: digitalização 100% de documentos e campanha 'Zero Copo Plástico' com copos reutilizáveis).
+              </p>
+              <textarea id="q2_f1" rows="3" required placeholder="Plano de engajamento dos funcionários..." class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-3 text-xs text-slate-200 focus:border-sky-400 focus:outline-none"></textarea>
+            </div>
+          `;
+          f2.innerHTML = `
+            <div class="space-y-2">
+              <label class="block text-xs font-semibold text-slate-200">2.1 Impacto Social e Economia de Recursos:</label>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                Como a redução do uso de papel e a criação de uma cultura verde melhoram o clima organizacional e reduzem despesas operacionais?
+              </p>
+              <textarea id="q1_f2" rows="3" placeholder="Justificativa comportamental..." class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-3 text-xs text-slate-200 focus:border-amber-400 focus:outline-none"></textarea>
+            </div>
+          `;
+        } else {
+          f1.innerHTML = `
+            <div class="space-y-2">
+              <label class="block text-xs font-semibold text-slate-200">1.1 Diagnóstico de Ineficiência Energética:</label>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                Compressores com vazamento de ar comprimido e motores elétricos antigos operando com baixo fator de potência. Qual o custo ecológico e financeiro?
+              </p>
+              <textarea id="q1_f1" rows="3" required placeholder="Diagnóstico de energia do Setor D..." class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-3 text-xs text-slate-200 focus:border-sky-400 focus:outline-none"></textarea>
+            </div>
+            <div class="space-y-2">
+              <label class="block text-xs font-semibold text-slate-200">1.2 Ecoeficiência & Energias Limpas:</label>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                Proponha 2 ações técnicas (ex: instalação de lâmpadas LED industriais, correção de vazamentos pneumáticos ou instalação de painéis solares).
+              </p>
+              <textarea id="q2_f1" rows="3" required placeholder="Propostas de eficiência energética..." class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-3 text-xs text-slate-200 focus:border-sky-400 focus:outline-none"></textarea>
+            </div>
+          `;
+          f2.innerHTML = `
+            <div class="space-y-2">
+              <label class="block text-xs font-semibold text-slate-200">2.1 Payback & Redução da Pegada de Carbono:</label>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                Demonstre como a economia mensal na conta de energia da subestação paga o investimento nos painéis solares e sensores IoT em médio prazo.
+              </p>
+              <textarea id="q1_f2" rows="3" placeholder="Argumentação financeira..." class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-3 text-xs text-slate-200 focus:border-amber-400 focus:outline-none"></textarea>
+            </div>
+          `;
+        }
+      }
+      // CONTEÚDO 3º ANO (AUTOCONHECIMENTO & ÉTICA)
+      else if (ano === "3") {
+        if (setorId === 'A') {
+          f1.innerHTML = `
+            <div class="space-y-2">
+              <label class="block text-xs font-semibold text-slate-200">1.1 Mapeamento de Habilidades na Usinagem 4.0:</label>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                Quais Hard Skills (programação CNC, robótica) e Soft Skills (trabalho em equipe, resiliência, inteligência emocional) os operários de montagem precisam desenvolver?
+              </p>
+              <textarea id="q1_f1" rows="3" required placeholder="Competências para o futuro na montagem..." class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-3 text-xs text-slate-200 focus:border-sky-400 focus:outline-none"></textarea>
+            </div>
+          `;
+          f2.innerHTML = `
+            <div class="space-y-2">
+              <label class="block text-xs font-semibold text-slate-200">2.1 Dilema Ético — Demissão x Requalificação:</label>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                Cenário: <em>A EcoTech vai adquirir 4 braços robóticos. A empresa deve demitir 10 operários antigos ou criar uma célula de qualificação técnica no SESI/SENAI para formá-los em mantenedores de robôs?</em> Justifique o parecer.
+              </p>
+              <textarea id="q1_f2" rows="3" placeholder="Parecer ético da equipe..." class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-3 text-xs text-slate-200 focus:border-amber-400 focus:outline-none"></textarea>
+            </div>
+          `;
+        } else if (setorId === 'B') {
+          f1.innerHTML = `
+            <div class="space-y-2">
+              <label class="block text-xs font-semibold text-slate-200">1.1 Competências para Logística Inteligente:</label>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                Quais competências comportamentais (adaptabilidade, resolução de problemas complexos, visão sistêmica) a equipe considera essenciais para liderar um estoque automatizado?
+              </p>
+              <textarea id="q1_f1" rows="3" required placeholder="Autoavaliação de competências..." class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-3 text-xs text-slate-200 focus:border-sky-400 focus:outline-none"></textarea>
+            </div>
+          `;
+          f2.innerHTML = `
+            <div class="space-y-2">
+              <label class="block text-xs font-semibold text-slate-200">2.1 Dilema Ético — Automação de Estoque:</label>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                Cenário: <em>Um software com IA para gestão de estoque reduz a necessidade de conferentes de inventário. Qual recomendação a equipe faz para garantir a transição justa dos trabalhadores?</em>
+              </p>
+              <textarea id="q1_f2" rows="3" placeholder="Parecer ético..." class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-3 text-xs text-slate-200 focus:border-amber-400 focus:outline-none"></textarea>
+            </div>
+          `;
+        } else if (setorId === 'C') {
+          f1.innerHTML = `
+            <div class="space-y-2">
+              <label class="block text-xs font-semibold text-slate-200">1.1 Liderança Humanizada & Projeto de Vida:</label>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                Como gestor de RH do futuro, quais valores pessoais (empatia, ética, escuta ativa) você deve cultivar para mediar conflitos entre metas da indústria e bem-estar dos funcionários?
+              </p>
+              <textarea id="q1_f1" rows="3" required placeholder="Reflexão de liderança e projeto de vida..." class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-3 text-xs text-slate-200 focus:border-sky-400 focus:outline-none"></textarea>
+            </div>
+          `;
+          f2.innerHTML = `
+            <div class="space-y-2">
+              <label class="block text-xs font-semibold text-slate-200">2.1 Dilema Ético — Algoritmos de Seleção:</label>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                Cenário: <em>A IA de recrutamento rejeitou candidatos sem diploma de faculdade de elite, eliminando talentos formados no SENAI. Como a liderança de RH deve intervir com ética?</em>
+              </p>
+              <textarea id="q1_f2" rows="3" placeholder="Parecer sobre equidade e ética..." class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-3 text-xs text-slate-200 focus:border-amber-400 focus:outline-none"></textarea>
+            </div>
+          `;
+        } else {
+          f1.innerHTML = `
+            <div class="space-y-2">
+              <label class="block text-xs font-semibold text-slate-200">1.1 Mapeamento de Perfis de Manutenção Preditiva:</label>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                Quais Soft Skills (proatividade, tomada de decisão sob pressão, pensamento analítico) são críticas para o técnico que interpreta alertas de sensores preditivos?
+              </p>
+              <textarea id="q1_f1" rows="3" required placeholder="Competências comportamentais..." class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-3 text-xs text-slate-200 focus:border-sky-400 focus:outline-none"></textarea>
+            </div>
+          `;
+          f2.innerHTML = `
+            <div class="space-y-2">
+              <label class="block text-xs font-semibold text-slate-200">2.1 Dilema Ético — Segurança vs Meta de Produção:</label>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                Cenário: <em>O sensor indica que uma máquina pode falhar. Parar a máquina reduz a produção e o bônus financeiro dos colegas no mês. Qual a atitude ética do profissional de manutenção?</em>
+              </p>
+              <textarea id="q1_f2" rows="3" placeholder="Decisão ética fundamentada..." class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-3 text-xs text-slate-200 focus:border-amber-400 focus:outline-none"></textarea>
+            </div>
+          `;
+        }
+      }
+
+      // Restaura valores já preenchidos se existirem
+      if (equipeSessao.dia1 && equipeSessao.dia1.respostas) {
+        if (document.getElementById('q1_f1')) document.getElementById('q1_f1').value = equipeSessao.dia1.respostas.q1 || '';
+        if (document.getElementById('q2_f1')) document.getElementById('q2_f1').value = equipeSessao.dia1.respostas.q2 || '';
+      }
+
+      if (equipeSessao.dia2 && equipeSessao.dia2.respostas) {
+        if (document.getElementById('q1_f2')) document.getElementById('q1_f2').value = equipeSessao.dia2.respostas.q1 || '';
+        if (document.getElementById('q2_f2')) document.getElementById('q2_f2').value = equipeSessao.dia2.respostas.q2 || '';
+      }
+
+      if (equipeSessao.dia3 && equipeSessao.dia3.respostas) {
+        if (document.getElementById('q1_f3')) document.getElementById('q1_f3').value = equipeSessao.dia3.respostas.q1 || '';
+      }
+    }
+
+    async function salvarRespostasEstudante(e) {
+      e.preventDefault();
+
+      const q1_f1 = document.getElementById('q1_f1') ? document.getElementById('q1_f1').value.trim() : '';
+      const q2_f1 = document.getElementById('q2_f1') ? document.getElementById('q2_f1').value.trim() : '';
+
+      const q1_f2 = document.getElementById('q1_f2') ? document.getElementById('q1_f2').value.trim() : '';
+      const q2_f2 = document.getElementById('q2_f2') ? document.getElementById('q2_f2').value.trim() : '';
+
+      const q1_f3 = document.getElementById('q1_f3') ? document.getElementById('q1_f3').value.trim() : '';
+
+      const agora = new Date().toLocaleString("pt-BR");
+
+      if (q1_f1 !== '') {
+        equipeSessao.dia1 = {
+          concluido: true,
+          dataEnvio: agora,
+          respostas: { q1: q1_f1, q2: q2_f1 }
+        };
+      }
+
+      if (q1_f2 !== '') {
+        equipeSessao.dia2 = {
+          concluido: true,
+          dataEnvio: agora,
+          respostas: { q1: q1_f2, q2: q2_f2 }
+        };
+      }
+
+      if (q1_f3 !== '') {
+        equipeSessao.dia3 = {
+          concluido: true,
+          dataEnvio: agora,
+          respostas: { q1: q1_f3 }
+        };
+      }
+
+      if (modoFirebase) {
+        try {
+          await db.collection("entregas_sesi").doc(equipeSessao.idDoc).set(equipeSessao);
+          showToast("Respostas salvas com sucesso no Firebase!", "success");
+        } catch (err) {
+          showToast("Erro no Firebase. Salvando no navegador...", "warning");
+          localStorage.setItem(`sesi_app_${equipeSessao.idDoc}`, JSON.stringify(equipeSessao));
+        }
+      } else {
+        localStorage.setItem(`sesi_app_${equipeSessao.idDoc}`, JSON.stringify(equipeSessao));
+        showToast("Respostas salvas com sucesso no dispositivo!", "success");
+      }
+
+      renderizarPainelDesafio();
+    }
+
+    function voltarIdentificacao() {
+      document.getElementById('sec-desafio').classList.add('hidden');
+      document.getElementById('sec-identificacao').classList.remove('hidden');
+    }
+
+    // =========================================================================
+    // CRONÔMETRO INTERATIVO DO PITCH (3 MINUTOS) - MÓDULO PROFESSOR
+    // =========================================================================
+    let timerPitchInterval = null;
+    let timerPitchSegundos = 180; // 3 minutos
+
+    function atualizarDisplayTimer() {
+      const min = Math.floor(timerPitchSegundos / 60);
+      const seg = timerPitchSegundos % 60;
+      const strMin = String(min).padStart(2, '0');
+      const strSeg = String(seg).padStart(2, '0');
+      
+      const display = document.getElementById('prof-timer-display');
+      display.innerText = `${strMin}:${strSeg}`;
+
+      if (timerPitchSegundos <= 30 && timerPitchSegundos > 0) {
+        display.className = "font-mono text-4xl md:text-5xl font-black text-amber-400 tracking-wider bg-[#001222] px-6 py-2 rounded-2xl border border-amber-500/60 pulse-glow";
+      } else if (timerPitchSegundos === 0) {
+        display.className = "font-mono text-4xl md:text-5xl font-black text-red-500 tracking-wider bg-[#001222] px-6 py-2 rounded-2xl border border-red-500/80 animate-bounce";
+      } else {
+        display.className = "font-mono text-4xl md:text-5xl font-black text-purple-300 tracking-wider bg-[#001222] px-6 py-2 rounded-2xl border border-purple-500/40 shadow-inner";
+      }
+    }
+
+    function iniciarTimerPitch() {
+      if (timerPitchInterval) return;
+      if (timerPitchSegundos === 0) timerPitchSegundos = 180;
+
+      timerPitchInterval = setInterval(() => {
+        if (timerPitchSegundos > 0) {
+          timerPitchSegundos--;
+          atualizarDisplayTimer();
+        } else {
+          clearInterval(timerPitchInterval);
+          timerPitchInterval = null;
+          showToast("Tempo esgotado para o Pitch da Equipe!", "warning");
+        }
+      }, 1000);
+
+      showToast("Cronômetro de 3 minutos iniciado!", "info");
+    }
+
+    function pausarTimerPitch() {
+      if (timerPitchInterval) {
+        clearInterval(timerPitchInterval);
+        timerPitchInterval = null;
+        showToast("Cronômetro pausado.", "info");
+      }
+    }
+
+    function resetarTimerPitch() {
+      pausarTimerPitch();
+      timerPitchSegundos = 180;
+      atualizarDisplayTimer();
+      showToast("Cronômetro reiniciado para 03:00.", "info");
+    }
+
+    // =========================================================================
+    // MÓDULO DO PROFESSOR (FILTROS E VISUALIZAÇÃO)
+    // =========================================================================
+    async function carregarEntregasProfessor() {
+      const ano = document.getElementById('prof-filtro-ano').value;
+      const turno = document.getElementById('prof-filtro-turno').value;
+      const turma = document.getElementById('prof-filtro-turma').value;
+      const chaveTurma = `${ano}_${turno}_${turma}`;
+
+      const container = document.getElementById('lista-equipes-prof');
+      container.innerHTML = `<p class="text-xs text-slate-400 text-center py-8 flex items-center justify-center gap-2">
+        <i class="fa-solid fa-spinner animate-spin text-sky-400"></i> Buscando entregas da Turma ${ano}º${turma} (${turno})...
+      </p>`;
+
+      let entregas = [];
+
+      if (modoFirebase) {
+        try {
+          const snap = await db.collection("entregas_sesi").where("chaveTurma", "==", chaveTurma).get();
+          snap.forEach(doc => entregas.push(doc.data()));
+        } catch (err) {
+          console.error(err);
+        }
+      } else {
+        for (let i = 0; i < localStorage.length; i++) {
+          const key = localStorage.key(i);
+          if (key.startsWith("sesi_app_")) {
+            try {
+              const item = JSON.parse(localStorage.getItem(key));
+              if (item.chaveTurma === chaveTurma) {
+                entregas.push(item);
+              }
+            } catch (e) {}
+          }
+        }
+      }
+
+      if (entregas.length === 0) {
+        container.innerHTML = `
+          <div class="bg-sesi-cardBg border border-sesi-cardBorder rounded-2xl p-8 text-center space-y-3">
+            <div class="w-12 h-12 bg-sesi-navy text-slate-500 rounded-full flex items-center justify-center mx-auto text-xl">
+              <i class="fa-solid fa-folder-open"></i>
+            </div>
+            <h4 class="text-sm font-bold text-slate-200">Nenhuma entrega registrada</h4>
+            <p class="text-xs text-slate-400 max-w-sm mx-auto">
+              Nenhuma equipe da Turma <strong>${ano}º${turma} (${turno})</strong> enviou respostas ainda. Clique em "Gerar Dados de Exemplo" para testar a visualização.
+            </p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = "";
+
+      entregas.forEach(eq => {
+        const card = document.createElement('div');
+        card.className = "bg-sesi-cardBg border border-sesi-cardBorder rounded-2xl p-5 md:p-6 space-y-4 shadow-xl";
+
+        const stD1Badge = eq.dia1 && eq.dia1.concluido
+          ? `<span class="bg-emerald-950 text-emerald-300 border border-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded-full"><i class="fa-solid fa-check"></i> Dia 1</span>`
+          : `<span class="bg-amber-950 text-amber-300 border border-amber-800 text-[10px] font-bold px-2 py-0.5 rounded-full"><i class="fa-solid fa-clock"></i> Dia 1</span>`;
+
+        const stD2Badge = eq.dia2 && eq.dia2.concluido
+          ? `<span class="bg-emerald-950 text-emerald-300 border border-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded-full"><i class="fa-solid fa-check"></i> Dia 2</span>`
+          : `<span class="bg-sesi-navy text-slate-500 border border-sesi-cardBorder text-[10px] font-bold px-2 py-0.5 rounded-full"><i class="fa-solid fa-lock"></i> Dia 2</span>`;
+
+        const stD3Badge = eq.dia3 && eq.dia3.concluido
+          ? `<span class="bg-purple-950 text-purple-300 border border-purple-800 text-[10px] font-bold px-2 py-0.5 rounded-full"><i class="fa-solid fa-microphone"></i> Pitch OK</span>`
+          : `<span class="bg-sesi-navy text-slate-500 border border-sesi-cardBorder text-[10px] font-bold px-2 py-0.5 rounded-full"><i class="fa-solid fa-lock"></i> Pitch</span>`;
+
+        card.innerHTML = `
+          <div class="flex flex-col md:flex-row justify-between md:items-center gap-2 border-b border-sesi-cardBorder pb-3">
+            <div>
+              <div class="flex items-center gap-2">
+                <h4 class="text-lg font-bold text-sky-400 font-mono tracking-wider">EQUIPE: ${eq.equipe}</h4>
+                <span class="text-[10px] bg-sesi-navy text-slate-300 px-2.5 py-0.5 rounded-full border border-sesi-cardBorder font-medium">${eq.setorNome || 'Setor Padrão'}</span>
+              </div>
+              <p class="text-xs text-slate-400 mt-1">Integrantes: <strong class="text-slate-200">${eq.integrantes.join(", ")}</strong></p>
+            </div>
+            <div class="flex items-center gap-1.5">
+              ${stD1Badge}
+              ${stD2Badge}
+              ${stD3Badge}
+            </div>
+          </div>
+
+          <!-- Respostas Detalhadas das 3 Fases -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+            <div class="bg-[#001222] p-3.5 rounded-xl border border-sesi-cardBorder space-y-2">
+              <span class="text-[10px] font-bold text-sky-400 uppercase tracking-wider block border-b border-sesi-cardBorder pb-1">
+                Fase 1: Diagnóstico (Dia 1) ${eq.dia1 && eq.dia1.dataEnvio ? `&bull; ${eq.dia1.dataEnvio}` : ''}
+              </span>
+              ${eq.dia1 && eq.dia1.respostas ? `
+                <p class="text-slate-300"><strong>P1:</strong> ${eq.dia1.respostas.q1 || 'Sem resposta'}</p>
+                <p class="text-slate-300"><strong>P2:</strong> ${eq.dia1.respostas.q2 || 'Sem resposta'}</p>
+              ` : '<p class="text-slate-500 italic">Pendente.</p>'}
+            </div>
+
+            <div class="bg-[#001222] p-3.5 rounded-xl border border-sesi-cardBorder space-y-2">
+              <span class="text-[10px] font-bold text-amber-400 uppercase tracking-wider block border-b border-sesi-cardBorder pb-1">
+                Fase 2: Plano de Ação (Dia 2) ${eq.dia2 && eq.dia2.dataEnvio ? `&bull; ${eq.dia2.dataEnvio}` : ''}
+              </span>
+              ${eq.dia2 && eq.dia2.respostas ? `
+                <p class="text-slate-300"><strong>P1:</strong> ${eq.dia2.respostas.q1 || 'Sem resposta'}</p>
+                <p class="text-slate-300"><strong>P2:</strong> ${eq.dia2.respostas.q2 || 'Sem resposta'}</p>
+              ` : '<p class="text-slate-500 italic">Pendente.</p>'}
+            </div>
+
+            <div class="bg-[#001222] p-3.5 rounded-xl border border-sesi-cardBorder space-y-2">
+              <span class="text-[10px] font-bold text-purple-400 uppercase tracking-wider block border-b border-sesi-cardBorder pb-1">
+                Fase 3: Roteiro Pitch (Dia 3) ${eq.dia3 && eq.dia3.dataEnvio ? `&bull; ${eq.dia3.dataEnvio}` : ''}
+              </span>
+              ${eq.dia3 && eq.dia3.respostas ? `
+                <p class="text-slate-300"><strong>Roteiro:</strong> ${eq.dia3.respostas.q1 || 'Sem rascunho'}</p>
+              ` : '<p class="text-slate-500 italic">Pendente.</p>'}
+            </div>
+          </div>
+        `;
+
+        container.appendChild(card);
+      });
+    }
+
+    function gerarDadosDemonstrativos() {
+      const demoData = [
+        {
+          idDoc: "1_M_A_ALPHA1",
+          chaveTurma: "1_M_A",
+          ano: "1", turno: "M", turma: "A",
+          equipe: "ALPHA1",
+          setorId: "A",
+          setorNome: "Setor A: Linha de Montagem e Usinagem (Robótica)",
+          integrantes: ["Ana Clara Silva", "Bruno Santos", "Carlos Eduardo", "Daniela Lima"],
+          dia1: {
+            concluido: true,
+            dataEnvio: "10/11/2026 08:30",
+            respostas: {
+              q1: "a) Falso - Internet é a rede física e WWW o protocolo. b) Verdadeiro - Aspas filtram termos exatos.",
+              q2: "Vídeo sem confiabilidade técnica. Falta homologação da marca e responsável técnico NR-12."
+            }
+          },
+          dia2: {
+            concluido: true,
+            dataEnvio: "10/11/2026 09:15",
+            respostas: {
+              q1: "Plágio técnico. O código deve ser reutilizado citando a licença Open Source e autor original.",
+              q2: "No OneDrive do SESI/SENAI, conceder permissão de Edição para Engenharia e Visualização para Operadores."
+            }
+          },
+          dia3: {
+            concluido: true,
+            dataEnvio: "10/11/2026 10:00",
+            respostas: {
+              q1: "Pitch: 1. No Setor A há gargalo na calibração de robôs. 2. Propomos um manual verificado e nuvem segura. 3. Garantimos zero vazamento e 100% de segurança física."
+            }
+          }
+        },
+        {
+          idDoc: "2_M_A_BETA2",
+          chaveTurma: "2_M_A",
+          ano: "2", turno: "M", turma: "A",
+          equipe: "BETA2",
+          setorId: "B",
+          setorNome: "Setor B: Logística & Almoxarifado Inteligente",
+          integrantes: ["Eduardo Rocha", "Fernanda Costa", "Gabriel Mendes"],
+          dia1: {
+            concluido: true,
+            dataEnvio: "10/11/2026 08:42",
+            respostas: {
+              q1: "O alto consumo de caixas descartáveis aumenta a pegada de carbono do setor logístico em 25%.",
+              q2: "Adotar caixas plásticas retornáveis entre fornecedores e empilhadeiras recarregáveis por energia solar."
+            }
+          },
+          dia2: {
+            concluido: true,
+            dataEnvio: "10/11/2026 09:30",
+            respostas: {
+              q1: "Embalagens sustentáveis reduzem custos de compra de papelão e atraem clientes com metas ESG ativas."
+            }
+          },
+          dia3: { concluido: false, respostas: {} }
+        },
+        {
+          idDoc: "3_M_A_GAMMA3",
+          chaveTurma: "3_M_A",
+          ano: "3", turno: "M", turma: "A",
+          equipe: "GAMMA3",
+          setorId: "C",
+          setorNome: "Setor C: Recursos Humanos & Segurança do Trabalho",
+          integrantes: ["Heitor Souza", "Isabela Pires", "João Vitor"],
+          dia1: {
+            concluido: true,
+            dataEnvio: "10/11/2026 08:50",
+            respostas: {
+              q1: "Soft Skills críticas: empatia, liderança humanizada, comunicação transparente e gestão de inteligência emocional."
+            }
+          },
+          dia2: {
+            concluido: true,
+            dataEnvio: "10/11/2026 09:20",
+            respostas: {
+              q1: "Parecer Ético: A EcoTech deve requalificar os trabalhadores em parceria com o SESI/SENAI em vez de demitir."
+            }
+          },
+          dia3: {
+            concluido: true,
+            dataEnvio: "10/11/2026 10:10",
+            respostas: {
+              q1: "Pitch Roteiro 3-2-1: 1. O medo do desemprego gera resistência. 2. A requalificação verde preserva o capital humano. 3. Formamos a indústria 4.0 mais ética do setor."
+            }
+          }
+        }
+      ];
+
+      demoData.forEach(item => {
+        localStorage.setItem(`sesi_app_${item.idDoc}`, JSON.stringify(item));
+        if (modoFirebase) {
+          try { db.collection("entregas_sesi").doc(item.idDoc).set(item); } catch (e) {}
+        }
+      });
+
+      showToast("Dados de teste enviados para o Firebase!", "success");
+      carregarEntregasProfessor();
+    }
+  </script>
+</body>
+</html>
