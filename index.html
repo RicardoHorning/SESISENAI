@@ -765,63 +765,112 @@
     }
 
     // BASE DE DADOS INTEGRAL DE DOSSIÊS AUDITADOS DA ECOTECH (POR ANO E SETOR)
+    // ESTUDOS DE CASO NARRATIVOS (STORYTELLING ADAPTADO E ACESSÍVEL)
     function obterDossieFabrica(ano, setorId) {
       const repositorio = {
         "1": {
           "A": {
             cod: "AUD-2026-1A",
-            titulo: "Dossiê de Diagnóstico: Integridade de Dados na Montagem Robótica",
-            resumo: "Auditoria revelou que manuais técnicos não homologados e códigos de braços robóticos copiados de fóruns abertos geraram 14 paradas não programadas e prejuízo de R$ 38.500,00 no mês.",
+            titulo: "Estudo de Caso: O Enigma do Braço Robótico Descalibrado",
+            resumo: "Um vídeo 'milagroso' de internet prometia acelerar os robôs da fábrica sem calibração. O resultado? Peças tortas, máquinas paradas e um prejuízo de R$ 38.500,00.",
             detalhes: `
-              <div class="space-y-2">
-                <p><strong>Relatório de Auditoria Digital nº 1A/2026:</strong></p>
-                <ul class="list-disc pl-4 space-y-1 text-slate-300">
-                  <li><strong>Gargalo Identificado:</strong> O setor de usinagem operava com parâmetros extraídos de um vídeo de rede social sem assinatura técnica de engenheiro responsável.</li>
-                  <li><strong>Impacto Financeiro:</strong> R$ 38.500,00 perdidos em refugo de peças usinadas por erro de calibração.</li>
-                  <li><strong>Dilema da Nuvem:</strong> Arquivos de programação CNC estavam salvos em pastas pessoais dos técnicos, sem permissão centralizada no drive oficial da EcoTech.</li>
-                </ul>
+              <div class="space-y-3 text-xs leading-relaxed">
+                <div class="bg-[#001222] p-3 rounded-lg border border-sky-500/30">
+                  <h5 class="font-bold text-sky-400 text-sm mb-1">📖 A História da Fábrica EcoTech:</h5>
+                  <p class="text-slate-200">
+                    Na segunda-feira de manhã, a linha de usinagem e robótica travou completamente. Lucas, o novo técnico da montagem, precisava ajustar a precisão do braço robótico Kuka. Com pressa, em vez de consultar o manual homologado na rede corporativa, Lucas pesquisou no celular e encontrou um vídeo curto na internet com o título: <em>"Aprenda a calibrar qualquer robô industrial em 2 minutos sem usar gabarito!"</em>.
+                  </p>
+                  <p class="text-slate-200 mt-2">
+                    Ele aplicou o código ensinado no vídeo. Duas horas depois, o robô começou a golpear a mesa de usinagem com força excessiva. Quatorze lote de peças de alumínio saíram deformadas, gerando <strong>R$ 38.500,00 de prejuízo direto em refugo</strong> e parando a linha por um dia inteiro.
+                  </p>
+                </div>
+
+                <div class="bg-sesi-navy p-3 rounded-lg border border-sesi-cardBorder space-y-1.5">
+                  <h5 class="font-bold text-amber-400 text-xs uppercase tracking-wider">🔎 Evidências Encontradas pelos Auditores:</h5>
+                  <ul class="list-disc pl-4 space-y-1 text-slate-300">
+                    <li><strong>Falta de Fonte Oficial:</strong> O canal do vídeo não tinha assinatura de engenheiro nem ligação com o fabricante do equipamento.</li>
+                    <li><strong>Caos na Nuvem:</strong> Os manuais oficiais da fábrica estavam salvos em computadores pessoais dos antigos funcionários, sem um drive centralizado e organizado em nuvem.</li>
+                    <li><strong>Riscos de Segurança:</strong> Códigos sem procedência podem conter vírus ou instruções que colocam em risco os operadores no chão de fábrica.</li>
+                  </ul>
+                </div>
               </div>
             `
           },
           "B": {
             cod: "AUD-2026-1B",
-            titulo: "Dossiê de Diagnóstico: Vazio de Confiabilidade no Almoxarifado Inteligente",
-            resumo: "Blog não oficial divulgou fake news sobre exigência legal de veículos autônomos de R$ 500 mil. A equipe de compras quase efetuou o pedido sem checar fontes governamentais.",
+            titulo: "Estudo de Caso: A Falsa Crise das Empilhadeiras de Meio Milhão",
+            resumo: "Uma mensagem sensacionalista espalhada no WhatsApp dizia que a lei exigiria empilhadeiras robóticas caras. O desespero quase fez a fábrica comprar máquinas desnecessárias.",
             detalhes: `
-              <div class="space-y-2">
-                <p><strong>Relatório de Auditoria de Dados nº 1B/2026:</strong></p>
-                <ul class="list-disc pl-4 space-y-1 text-slate-300">
-                  <li><strong>Inconsistência de Informação:</strong> Notícia falsa circulou via WhatsApp corporativo alegando obrigatoriedade iminente de substituição da frota.</li>
-                  <li><strong>Vazamento de Planilha:</strong> O inventário de insumos em nuvem estava configurado com permissão "Público para Leitura e Edição", expondo fornecedores estratégicos.</li>
-                </ul>
+              <div class="space-y-3 text-xs leading-relaxed">
+                <div class="bg-[#001222] p-3 rounded-lg border border-cyan-500/30">
+                  <h5 class="font-bold text-cyan-400 text-sm mb-1">📖 A História da Fábrica EcoTech:</h5>
+                  <p class="text-slate-200">
+                    Dona Marta, supervisora de logística há 10 anos, recebeu uma mensagem urgente em um grupo da categoria: <em>"ATENÇÃO! Nova Portaria do Governo obriga todas as indústrias a trocar empilhadeiras manuais por robôs AGV autônomos até o fim do mês sob pena de interdição!"</em>. A mensagem vinha acompanhada de um link para uma notícia em um blog chamado <em>'Indústria Notícias Urgentes'</em>.
+                  </p>
+                  <p class="text-slate-200 mt-2">
+                    Assustada com o risco de a EcoTech ser fechada, Marta encaminhou a mensagem para a diretoria sugerindo a compra emergencial de 2 robôs AGV por <strong>R$ 500.000,00 cada</strong>. Antes de assinar o cheque, a equipe de auditoria do SESI SENAI foi chamada para investigar o caso.
+                  </p>
+                </div>
+
+                <div class="bg-sesi-navy p-3 rounded-lg border border-sesi-cardBorder space-y-1.5">
+                  <h5 class="font-bold text-amber-400 text-xs uppercase tracking-wider">🔎 Evidências Encontradas pelos Auditores:</h5>
+                  <ul class="list-disc pl-4 space-y-1 text-slate-300">
+                    <li><strong>Fake News Confirmada:</strong> O portal oficial do Ministério do Trabalho não publicou nenhuma norma com essa exigência. O blog era um site caça-cliques.</li>
+                    <li><strong>Vazamento de Dados em Nuvem:</strong> Ao tentar compartilhar a planilha de fornecedores no desespero, a planilha do estoque foi configurada como "Pública", expondo preços secretos na web.</li>
+                  </ul>
+                </div>
               </div>
             `
           },
           "C": {
             cod: "AUD-2026-1C",
-            titulo: "Dossiê de Diagnóstico: Segurança da Informação & LGPD no RH",
-            resumo: "Boatos virtuais sobre exames médicos obrigatórios em aplicativo não auditado causaram pânico entre 45 colaboradores do chão de fábrica.",
+            titulo: "Estudo de Caso: O Boato do Aplicativo Suspeito no RH",
+            resumo: "Uma corrente no WhatsApp cobrava o cadastro de dados pessoais em um app desconhecido sob ameaça de demissão, gerando pânico entre 45 operários.",
             detalhes: `
-              <div class="space-y-2">
-                <p><strong>Relatório de Auditoria Humana nº 1C/2026:</strong></p>
-                <ul class="list-disc pl-4 space-y-1 text-slate-300">
-                  <li><strong>Infodemia Interna:</strong> Circulação de mensagens falsas sem link ou autor oficial reduziram o engajamento nos treinamentos de segurança em 30%.</li>
-                  <li><strong>Direitos Autorais:</strong> Apostilas de treinamento contavam com imagens e textos copiados sem referência bibliográfica aos autores originais.</li>
-                </ul>
+              <div class="space-y-3 text-xs leading-relaxed">
+                <div class="bg-[#001222] p-3 rounded-lg border border-sky-500/30">
+                  <h5 class="font-bold text-sky-400 text-sm mb-1">📖 A História da Fábrica EcoTech:</h5>
+                  <p class="text-slate-200">
+                    Na quarta-feira, 45 operários do setor de produção recusaram-se a assumir seus postos de trabalho. O motivo? Uma imagem que circulava nos grupos de conversa dizia que quem não baixasse um aplicativo externo chamado <em>'SaúdeTotal-Apk'</em> e informasse o CPF e histórico médico até o meio-dia seria demitido por justa causa.
+                  </p>
+                  <p class="text-slate-200 mt-2">
+                    O aplicativo pedia acesso total à câmera, contatos e localização do celular. Ao mesmo tempo, descobriu-se que os manuais de treinamento do RH contavam com trechos e ilustrações copiados da internet sem nenhuma citação aos autores originais.
+                  </p>
+                </div>
+
+                <div class="bg-sesi-navy p-3 rounded-lg border border-sesi-cardBorder space-y-1.5">
+                  <h5 class="font-bold text-amber-400 text-xs uppercase tracking-wider">🔎 Evidências Encontradas pelos Auditores:</h5>
+                  <ul class="list-disc pl-4 space-y-1 text-slate-300">
+                    <li><strong>Golpe de Phishing (LGPD):</strong> O RH nunca autorizou o aplicativo. Tratava-se de uma tentativa de roubo de dados dos trabalhadores.</li>
+                    <li><strong>Violação de Direitos Autorais:</strong> As apostilas de integração continham plágio de materiais didáticos sem permissão do autor.</li>
+                  </ul>
+                </div>
               </div>
             `
           },
           "D": {
             cod: "AUD-2026-1D",
-            titulo: "Dossiê de Diagnóstico: Fake News de Energia na Manutenção",
-            resumo: "Proposta não verificada de economizador elétrico 'milagroso' prometia 90% de redução na conta de luz da subestação, violando leis fundamentais da física.",
+            titulo: "Estudo de Caso: O 'Economizador Mágico' de Energia",
+            resumo: "Um anúncio tentador de um chip 'milagroso' prometia cortar 90% da conta de luz da subestação da fábrica. O teste informal queimou dois compressores principais.",
             detalhes: `
-              <div class="space-y-2">
-                <p><strong>Relatório de Auditoria Elétrica nº 1D/2026:</strong></p>
-                <ul class="list-disc pl-4 space-y-1 text-slate-300">
-                  <li><strong>Ausência de Protocolo Técnico:</strong> Schemas elétricos da subestação baixados de fóruns sem validação da fábrica causaram curto em 2 compressores.</li>
-                  <li><strong>Armazenamento Desorganizado:</strong> Registros de manutenção preditiva gravados localmente em computadores de oficina, impedindo backup em nuvem.</li>
-                </ul>
+              <div class="space-y-3 text-xs leading-relaxed">
+                <div class="bg-[#001222] p-3 rounded-lg border border-indigo-500/30">
+                  <h5 class="font-bold text-indigo-400 text-sm mb-1">📖 A História da Fábrica EcoTech:</h5>
+                  <p class="text-slate-200">
+                    Seu Valdir, eletricista da fábrica, estava preocupado com o valor da conta de luz da subestação elétrica da EcoTech. Navegando por fóruns não oficiais, ele encontrou um anúncio vibrante: <em>"Economizador quântico de energia industrial: reduza 90% da sua conta instalando este dispositivo sem alterar a fiação!"</em>.
+                  </p>
+                  <p class="text-slate-200 mt-2">
+                    Sem consultar os esquemas elétricos oficiais e validados, Seu Valdir comprou e conectou o dispositivo diretamente no painel do compressor de ar. O aparelho causou um curto-circuito grave por sobretensão, queimando dois motores elétricos essenciais e deixando a manutenção no escuro.
+                  </p>
+                </div>
+
+                <div class="bg-sesi-navy p-3 rounded-lg border border-sesi-cardBorder space-y-1.5">
+                  <h5 class="font-bold text-amber-400 text-xs uppercase tracking-wider">🔎 Evidências Encontradas pelos Auditores:</h5>
+                  <ul class="list-disc pl-4 space-y-1 text-slate-300">
+                    <li><strong>Pseudo-Ciência e Fraude:</strong> O produto prometia quebrar leis fundamentais da física (Conservação da Energia).</li>
+                    <li><strong>Registros Perdidos:</strong> O histórico de manutenções estava salvo no bloco de notas de um computador antigo sem backup na nuvem.</li>
+                  </ul>
+                </div>
               </div>
             `
           }
@@ -829,57 +878,105 @@
         "2": {
           "A": {
             cod: "AUD-2026-2A",
-            titulo: "Dossiê de Auditoria ESG: Desperdício de Insumos na Usinagem",
-            resumo: "A usinagem descartou 1,4 tonelada de cavaco metálico e 850 litros de óleo solúvel contaminado em aterro comum no último trimestre.",
+            titulo: "Estudo de Caso: A Montanha de Metal e o Lago de Óleo Escuro",
+            resumo: "A usinagem jogava toneladas de cavaco de alumínio e óleo solúvel contaminado em lixeiras comuns, acumulando R$ 22.400 em multas e poluição ambiental.",
             detalhes: `
-              <div class="space-y-2">
-                <p><strong>Balanço de Sustentabilidade nº 2A/2026:</strong></p>
-                <ul class="list-disc pl-4 space-y-1 text-slate-300">
-                  <li><strong>Custo do Resíduo:</strong> R$ 22.400,00 gastos em multas de descarte e compra de lubrificantes virgens.</li>
-                  <li><strong>Oportunidade Verde:</strong> Implantação de sistema de filtragem de óleo e venda de sucata de alumínio para reciclagem com payback de 4 meses.</li>
-                </ul>
+              <div class="space-y-3 text-xs leading-relaxed">
+                <div class="bg-[#001222] p-3 rounded-lg border border-blue-500/30">
+                  <h5 class="font-bold text-blue-400 text-sm mb-1">📖 A História da Fábrica EcoTech:</h5>
+                  <p class="text-slate-200">
+                    Durante o processo de corte das peças de alumínio, os tornos CNC produzem milhares de fita de metal (cavacos) e consomem litros de óleo lubrificante solúvel em água. Por falta de um plano de gestão de resíduos, os operadores misturavam o cavaco sujo de óleo com o lixo orgânico da fábrica.
+                  </p>
+                  <p class="text-slate-200 mt-2">
+                    Em apenas 3 meses, <strong>1,4 tonelada de alumínio reutilizável foi para o aterro sanitário</strong> e 850 litros de óleo contaminaram o solo nos fundos do galpão, resultando em uma multa ambiental pesada de R$ 22.400,00 para a EcoTech.
+                  </p>
+                </div>
+
+                <div class="bg-sesi-navy p-3 rounded-lg border border-sesi-cardBorder space-y-1.5">
+                  <h5 class="font-bold text-amber-400 text-xs uppercase tracking-wider">🔎 Evidências da Auditoria ESG:</h5>
+                  <ul class="list-disc pl-4 space-y-1 text-slate-300">
+                    <li><strong>Desperdício de Recursos:</strong> Sucata de alumínio limpa pode ser vendida para recicladoras com alto valor comercial.</li>
+                    <li><strong>Economia Circular:</strong> A instalação de um centrifugador de óleo permitiria filtrar e reutilizar o mesmo lubrificante até 5 vezes.</li>
+                  </ul>
+                </div>
               </div>
             `
           },
           "B": {
             cod: "AUD-2026-2B",
-            titulo: "Dossiê de Auditoria ESG: Pegada de Carbono no Almoxarifado",
-            resumo: "O setor logístico utilizou 3.200 caixas de papelão descartáveis e 450 kg de filme plástico bolha não reciclável em apenas 30 dias.",
+            titulo: "Estudo de Caso: A Avalanche de Caixas de Papelão Descartáveis",
+            resumo: "O almoxarifado utilizava milhares de caixas descartáveis para transportar peças entre galpões, aumentando em 18% a pegada de carbono da indústria.",
             detalhes: `
-              <div class="space-y-2">
-                <p><strong>Balanço de Pegada Ecológica nº 2B/2026:</strong></p>
-                <ul class="list-disc pl-4 space-y-1 text-slate-300">
-                  <li><strong>Emissão de CO2:</strong> Incremento de 18% na pegada de carbono da fábrica por uso de embalagens descartáveis entre unidades.</li>
-                  <li><strong>Logística Reversa:</strong> Proposta de caixas plásticas de polipropileno retornáveis reduz custo recorrente em 65%.</li>
-                </ul>
+              <div class="space-y-3 text-xs leading-relaxed">
+                <div class="bg-[#001222] p-3 rounded-lg border border-cyan-500/30">
+                  <h5 class="font-bold text-cyan-400 text-sm mb-1">📖 A História da Fábrica EcoTech:</h5>
+                  <p class="text-slate-200">
+                    Para mover engrenagens do almoxarifado até a linha de montagem final (uma distância de apenas 200 metros), os operadores embalavam cada lote em caixas de papelão novas e envolviam tudo com plástico bolha não reciclável.
+                  </p>
+                  <p class="text-slate-200 mt-2">
+                    Ao final do dia, a caçamba de lixo do setor amanhecia lotada de <strong>3.200 caixas de papelão rasgadas</strong> que tinham sido usadas por menos de 10 minutos. O cálculo da pegada de carbono revelou um desperdício monstruoso de árvores, água e transporte de resíduos.
+                  </p>
+                </div>
+
+                <div class="bg-sesi-navy p-3 rounded-lg border border-sesi-cardBorder space-y-1.5">
+                  <h5 class="font-bold text-amber-400 text-xs uppercase tracking-wider">🔎 Evidências da Auditoria ESG:</h5>
+                  <ul class="list-disc pl-4 space-y-1 text-slate-300">
+                    <li><strong>Oportunidade Verde:</strong> Substituição por caixas plásticas de polipropileno retornáveis e duráveis por mais de 5 anos.</li>
+                    <li><strong>Ganho Financeiro:</strong> Redução permanente de 65% nos custos com insumos de embalagem da fábrica.</li>
+                  </ul>
+                </div>
               </div>
             `
           },
           "C": {
             cod: "AUD-2026-2C",
-            titulo: "Dossiê de Auditoria ESG: Desperdício de Papel e Plástico no RH",
-            resumo: "Impressão de 12.000 folhas de papel A4/mês para folhas de ponto e descarte de 4.500 copos plásticos nos refeitórios.",
+            titulo: "Estudo de Caso: O Mar de Copos Plásticos e o Oceano de Papéis",
+            resumo: "Impressões desnecessárias de holerites e o descarte diário de 4.500 copos plásticos geravam R$ 14.800/ano de gastos inúteis e poluição no RH.",
             detalhes: `
-              <div class="space-y-2">
-                <p><strong>Balanço de Consumo Interno nº 2C/2026:</strong></p>
-                <ul class="list-disc pl-4 space-y-1 text-slate-300">
-                  <li><strong>Custo Anual de Impressões:</strong> R$ 14.800,00 entre papel e cartuchos de tinta.</li>
-                  <li><strong>Plano Zero Plástico:</strong> Substituição por canecas térmicas reutilizáveis e digitalização 100% de contratos de trabalho.</li>
-                </ul>
+              <div class="space-y-3 text-xs leading-relaxed">
+                <div class="bg-[#001222] p-3 rounded-lg border border-sky-500/30">
+                  <h5 class="font-bold text-sky-400 text-sm mb-1">📖 A História da Fábrica EcoTech:</h5>
+                  <p class="text-slate-200">
+                    No setor de Recursos Humanos e nos refeitórios da EcoTech, o hábito do consumo descartável era a regra. Todo mês, o RH imprimia 12.000 folhas de papel A4 para holerites, aviso de férias e cartilhas de ponto que os funcionários liam e jogavam fora.
+                  </p>
+                  <p class="text-slate-200 mt-2">
+                    Para piorar, os bebendoiros consumiam <strong>4.500 copos plásticos de uso único todos os dias</strong>. O gasto anual ultrapassava R$ 14.800,00 apenas para comprar papel, cartuchos de tinta e plástico que iam parar no meio ambiente.
+                  </p>
+                </div>
+
+                <div class="bg-sesi-navy p-3 rounded-lg border border-sesi-cardBorder space-y-1.5">
+                  <h5 class="font-bold text-amber-400 text-xs uppercase tracking-wider">🔎 Evidências da Auditoria ESG:</h5>
+                  <ul class="list-disc pl-4 space-y-1 text-slate-300">
+                    <li><strong>Transformação Digital:</strong> Digitalização de 100% dos holerites via portal/app seguro e assinatura eletrônica.</li>
+                    <li><strong>Cultura Zero Plástico:</strong> Distribuição de garrafas e canecas térmicas reutilizáveis para todos os colaboradores da empresa.</li>
+                  </ul>
+                </div>
               </div>
             `
           },
           "D": {
             cod: "AUD-2026-2D",
-            titulo: "Dossiê de Auditoria ESG: Ineficiência Energética na Subestação",
-            resumo: "Vazamento contínuo na rede de ar comprimido e motores antigos operando com fator de potência de 0,72 geraram R$ 19.200/mês em desperdício elétrico.",
+            titulo: "Estudo de Caso: O Silvo Invisível que Roubava Energia",
+            resumo: "Vazamentos contínuos de ar comprimido e tubulações antigas custavam R$ 19.200,00 por mês em energia desperdiçada na subestação.",
             detalhes: `
-              <div class="space-y-2">
-                <p><strong>Balanço Energético nº 2D/2026:</strong></p>
-                <ul class="list-disc pl-4 space-y-1 text-slate-300">
-                  <li><strong>Desperdício Medido:</strong> 18.500 kWh jogados fora por vazamentos pneumáticos e lâmpadas fluorescentes antigas.</li>
-                  <li><strong>Projeto Fotovoltaico:</strong> Instalação de painéis solares no telhado do galpão paga investimento em 18 meses.</li>
-                </ul>
+              <div class="space-y-3 text-xs leading-relaxed">
+                <div class="bg-[#001222] p-3 rounded-lg border border-indigo-500/30">
+                  <h5 class="font-bold text-indigo-400 text-sm mb-1">📖 A História da Fábrica EcoTech:</h5>
+                  <p class="text-slate-200">
+                    Caminhando pela fábrica à noite, quando o barulho das máquinas cessava, era possível ouvir um silvo constante vindo dos canos de ar comprimido. Eram dezenas de pequenos furos e conexões frouxas que nunca passavam por manutenção.
+                  </p>
+                  <p class="text-slate-200 mt-2">
+                    Para compensar a perda de pressão do ar, o compressor elétrico da subestação trabalhava em carga máxima 24 horas por dia. O desperdício foi calculado em <strong>18.500 kWh por mês</strong>, adicionando R$ 19.200,00 à conta de luz da EcoTech sem gerar nenhum produto.
+                  </p>
+                </div>
+
+                <div class="bg-sesi-navy p-3 rounded-lg border border-sesi-cardBorder space-y-1.5">
+                  <h5 class="font-bold text-amber-400 text-xs uppercase tracking-wider">🔎 Evidências da Auditoria ESG:</h5>
+                  <ul class="list-disc pl-4 space-y-1 text-slate-300">
+                    <li><strong>Manutenção Preditiva:</strong> Vedação dos vazamentos e troca de lâmpadas antigas por iluminação LED de alta eficiência.</li>
+                    <li><strong>Matriz Renovável:</strong> Projeto de instalação de usina solar no telhado do galpão com retorno do investimento (payback) em 18 meses.</li>
+                  </ul>
+                </div>
               </div>
             `
           }
@@ -887,54 +984,105 @@
         "3": {
           "A": {
             cod: "AUD-2026-3A",
-            titulo: "Dossiê Estratégico: Automação Robótica vs. Transição Justa",
-            resumo: "A aquisição de 4 novos braços robóticos de alta precisão ameaça o emprego de 12 operários com mais de 15 anos de fábrica.",
+            titulo: "Estudo de Caso: Os Robôs Novinhos e o Futuro de Seu Antenor",
+            resumo: "A chegada de 4 braços robóticos ameaça a demissão de 12 operários antigos com mais de 15 anos de casa. Qual a decisão ética da gestão?",
             detalhes: `
-              <div class="space-y-2">
-                <p><strong>Relatório de Liderança & Carreira nº 3A/2026:</strong></p>
-                <ul class="list-disc pl-4 space-y-1 text-slate-300">
-                  <li><strong>O Conflito Executivo:</strong> A diretoria financeira sugere demissão sumária; o comitê de ética propõe plano de requalificação técnica no SENAI.</li>
-                  <li><strong>Competências Críticas:</strong> Transição de operário braçal para programador/mantenedor de células robotizadas.</li>
-                </ul>
+              <div class="space-y-3 text-xs leading-relaxed">
+                <div class="bg-[#001222] p-3 rounded-lg border border-blue-500/30">
+                  <h5 class="font-bold text-blue-400 text-sm mb-1">📖 A História da Fábrica EcoTech:</h5>
+                  <p class="text-slate-200">
+                    A EcoTech adquiriu 4 células robóticas modernas para a linha de usinagem e montagem. O relatório financeiro enviado à diretoria trazia uma recomendação fria: <em>"Demitir imediatamente 12 operários do setor para cortar custos com salários"</em>.
+                  </p>
+                  <p class="text-slate-200 mt-2">
+                    Entre esses operários está Seu Antenor, de 58 anos, que trabalha na fábrica há 15 anos e conhece cada parafuso da empresa, mas não sabe programar computadores. A diretoria está dividida entre demitir sumariamente ou investir em um plano de requalificação no SENAI para transformar esses operários em programadores e mantenedores de robôs.
+                  </p>
+                </div>
+
+                <div class="bg-sesi-navy p-3 rounded-lg border border-sesi-cardBorder space-y-1.5">
+                  <h5 class="font-bold text-amber-400 text-xs uppercase tracking-wider">🔎 Dilema de Liderança & Carreira:</h5>
+                  <ul class="list-disc pl-4 space-y-1 text-slate-300">
+                    <li><strong>Transição Justa:</strong> Como conciliar os ganhos de produtividade da tecnologia 4.0 sem descartar as pessoas e seus projetos de vida?</li>
+                    <li><strong>Requalificação (Upskilling):</strong> Mapeamento das Soft Skills (experiência, responsabilidade) combinadas com novas Hard Skills (robótica).</li>
+                  </ul>
+                </div>
               </div>
             `
           },
           "B": {
             cod: "AUD-2026-3B",
-            titulo: "Dossiê Estratégico: Algoritmos de Estoque & Impacto Social",
-            resumo: "Novo sistema de IA para expedição reduz em 70% a necessidade de conferentes manuais, gerando apreensão na equipe.",
+            titulo: "Estudo de Caso: A IA que Automatizou a Expedição de Estoque",
+            resumo: "Um sistema de inteligência artificial assumiu a contagem de estoque, reduzindo em 70% a necessidade de conferentes manuais. Como liderar essa mudança?",
             detalhes: `
-              <div class="space-y-2">
-                <p><strong>Relatório de Liderança & Carreira nº 3B/2026:</strong></p>
-                <ul class="list-disc pl-4 space-y-1 text-slate-300">
-                  <li><strong>Desafio Humanizado:</strong> Mapear Soft Skills (resolução de problemas, visão sistêmica) para realocar colaboradores em áreas de planejamento logístico.</li>
-                </ul>
+              <div class="space-y-3 text-xs leading-relaxed">
+                <div class="bg-[#001222] p-3 rounded-lg border border-cyan-500/30">
+                  <h5 class="font-bold text-cyan-400 text-sm mb-1">📖 A História da Fábrica EcoTech:</h5>
+                  <p class="text-slate-200">
+                    A implantação de câmeras com inteligência artificial e etiquetas digitais RFID no almoxarifado automatizou 70% das tarefas de conferência de caixas que antes eram feitas por jovens aprendizes e conferentes.
+                  </p>
+                  <p class="text-slate-200 mt-2">
+                    A equipe de logística ficou apavorada com o fantasma do desemprego tecnológico. O desafio do gestor é evitar que o clima de medo paralise o setor e planejar o reposicionamento profissional dessas pessoas para funções estratégicas de planejamento logístico e análise de dados.
+                  </p>
+                </div>
+
+                <div class="bg-sesi-navy p-3 rounded-lg border border-sesi-cardBorder space-y-1.5">
+                  <h5 class="font-bold text-amber-400 text-xs uppercase tracking-wider">🔎 Dilema de Liderança & Carreira:</h5>
+                  <ul class="list-disc pl-4 space-y-1 text-slate-300">
+                    <li><strong>Habilidades do Futuro:</strong> O algoritmo conta peças mais rápido, mas não sabe negociar com fornecedores nem resolver problemas complexos.</li>
+                    <li><strong>Projeto de Vida:</strong> Orientação para que os colaboradores desenvolvam competências de gestão e inteligência emocional.</li>
+                  </ul>
+                </div>
               </div>
             `
           },
           "C": {
             cod: "AUD-2026-3C",
-            titulo: "Dossiê Estratégico: Viés Algorítmico na Seleção de Pessoas",
-            resumo: "Software de IA para recrutamento automático eliminou 100% dos candidatos sem ensino superior de elite, descartando técnicos altamente qualificados formados no SENAI.",
+            titulo: "Estudo de Caso: O Filtro Invisível da IA de Recrutamento",
+            resumo: "Um software de IA para contratações eliminou automaticamente todos os candidatos sem faculdades de elite, descartando técnicos qualificados do SENAI.",
             detalhes: `
-              <div class="space-y-2">
-                <p><strong>Relatório de Liderança & Carreira nº 3C/2026:</strong></p>
-                <ul class="list-disc pl-4 space-y-1 text-slate-300">
-                  <li><strong>Dilema Ético do Gestor:</strong> Como intervir nos critérios do algoritmo para garantir diversidade, equidade e valorização do ensino técnico.</li>
-                </ul>
+              <div class="space-y-3 text-xs leading-relaxed">
+                <div class="bg-[#001222] p-3 rounded-lg border border-sky-500/30">
+                  <h5 class="font-bold text-sky-400 text-sm mb-1">📖 A História da Fábrica EcoTech:</h5>
+                  <p class="text-slate-200">
+                    Para agilizar a seleção de novos técnicos industriais, o setor de RH contratou uma plataforma de Inteligência Artificial que analisa currículos automaticamente. Após um mês, percebeu-se que 100% dos contratados vinham de poucas universidades particulares de elite da capital.
+                  </p>
+                  <p class="text-slate-200 mt-2">
+                    A auditoria descobriu que o algoritmo foi programado com um <strong>viés ético (discriminação algorítmica)</strong>: ele descartava automaticamente currículos que tivessem formações técnicas de nível médio, mesmo que os candidatos do SENAI tivessem obtido notas máximas nas provas de prática industrial.
+                  </p>
+                </div>
+
+                <div class="bg-sesi-navy p-3 rounded-lg border border-sesi-cardBorder space-y-1.5">
+                  <h5 class="font-bold text-amber-400 text-xs uppercase tracking-wider">🔎 Dilema de Liderança & Carreira:</h5>
+                  <ul class="list-disc pl-4 space-y-1 text-slate-300">
+                    <li><strong>Diversidade e Equidade:</strong> Como a liderança de RH deve intervir nos parâmetros da IA para valorizar a educação profissionalizante.</li>
+                    <li><strong>Responsabilidade Algorítmica:</strong> A tecnologia deve ser uma ferramenta de apoio, mas a decisão final sobre vidas humanas deve ser sempre do gestor.</li>
+                  </ul>
+                </div>
               </div>
             `
           },
           "D": {
             cod: "AUD-2026-3D",
-            titulo: "Dossiê Estratégico: Segurança do Trabalho vs. Metas de Lucro",
-            resumo: "Sensores IoT detectaram superaquecimento em transformador principal. Parar o equipamento evita explosão, mas paralisa a fábrica por 8h cancelando o bônus dos funcionários.",
+            titulo: "Estudo de Caso: O Apito do Sensor vs. O Bônus no Bolso",
+            resumo: "Um sensor indicou superaquecimento no transformador na sexta à tarde. Parar a máquina evita um incêndio, mas cancela o bônus de produção de toda a equipe.",
             detalhes: `
-              <div class="space-y-2">
-                <p><strong>Relatório de Liderança & Carreira nº 3D/2026:</strong></p>
-                <ul class="list-disc pl-4 space-y-1 text-slate-300">
-                  <li><strong>Decisão sob Pressão:</strong> Tomada de atitude ética da equipe de manutenção priorizando a integridade física em detrimento do bônus financeiro imediato.</li>
-                </ul>
+              <div class="space-y-3 text-xs leading-relaxed">
+                <div class="bg-[#001222] p-3 rounded-lg border border-indigo-500/30">
+                  <h5 class="font-bold text-indigo-400 text-sm mb-1">📖 A História da Fábrica EcoTech:</h5>
+                  <p class="text-slate-200">
+                    Às 16h45 de uma sexta-feira, os sensores de monitoramento preditivo emitiram um alerta vermelho: o transformador principal da subestação estava operando a 115°C, muito acima do limite de segurança.
+                  </p>
+                  <p class="text-slate-200 mt-2">
+                    Se a equipe de manutenção desligar o sistema para manutenção imediata, a fábrica para por 8 horas, a meta mensal não é atingida e <strong>todos os funcionários perdem o bônus financeiro de fim de ano</strong>. Se continuarem rodando, existe um risco real de o transformador explodir, provocando um grande incêndio e ferindo pessoas.
+                  </p>
+                </div>
+
+                <div class="bg-sesi-navy p-3 rounded-lg border border-sesi-cardBorder space-y-1.5">
+                  <h5 class="font-bold text-amber-400 text-xs uppercase tracking-wider">🔎 Dilema de Liderança & Carreira:</h5>
+                  <ul class="list-disc pl-4 space-y-1 text-slate-300">
+                    <li><strong>Ética em Primeiro Lugar:</strong> A vida humana e a segurança no trabalho são valores inegociáveis frente a ganhos financeiros.</li>
+                    <li><strong>Coragem Moral do Líder:</strong> Como o técnico de manutenção deve comunicar a decisão difícil para os colegas sem perder o respeito e a liderança.</li>
+                  </ul>
+                </div>
               </div>
             `
           }
@@ -1009,23 +1157,38 @@
       document.getElementById('modal-prof-login').classList.add('hidden');
     }
 
-    function abrirModalDossie() {
-      if (!equipeSessao) {
-        showToast("Identifique a equipe primeiro para abrir o dossiê do seu setor.", "warning");
-        return;
+    // SUPORTE A ABERTURA TANTO PELO ALUNO (SESSÃO) QUANTO DIRETO PELO PROFESSOR (PARÂMETROS)
+    function abrirModalDossie(anoParam, setorIdParam, equipeNomeParam) {
+      let ano = anoParam;
+      let setorId = setorIdParam;
+      let nomeEquipe = equipeNomeParam;
+
+      if (!ano || !setorId) {
+        if (!equipeSessao) {
+          showToast("Identifique a equipe primeiro para abrir o dossiê do seu setor.", "warning");
+          return;
+        }
+        ano = equipeSessao.ano;
+        const setorObj = obterSetorFabrica(equipeSessao.equipe);
+        setorId = setorObj.id;
+        nomeEquipe = equipeSessao.equipe;
       }
-      const setorObj = obterSetorFabrica(equipeSessao.equipe);
-      const dossie = obterDossieFabrica(equipeSessao.ano, setorObj.id);
+
+      const dossie = obterDossieFabrica(ano, setorId);
 
       if (dossie) {
-        document.getElementById('modal-dossie-titulo').innerText = `${dossie.cod} — ${dossie.titulo}`;
+        document.getElementById('modal-dossie-titulo').innerText = `${dossie.cod} — ${dossie.titulo} ${nomeEquipe ? `(Equipe: ${nomeEquipe})` : ''}`;
         document.getElementById('modal-dossie-corpo').innerHTML = `
           <div class="p-4 rounded-xl bg-[#001222] border border-sesi-cardBorder space-y-3">
-            <span class="text-[10px] font-bold uppercase text-sky-400 tracking-wider">Síntese Executiva de Auditoria</span>
-            <p class="text-xs text-slate-100 font-medium leading-relaxed">${dossie.resumo}</p>
+            <span class="text-[10px] font-bold uppercase text-sky-400 tracking-wider flex items-center gap-1.5">
+              <i class="fa-solid fa-book-open text-yellow-300"></i> Estudo de Caso Narrativo (Fábrica EcoTech)
+            </span>
+            <p class="text-xs text-slate-100 font-medium leading-relaxed italic">${dossie.resumo}</p>
           </div>
-          <div class="p-4 rounded-xl bg-sesi-navy/80 border border-sesi-cardBorder space-y-2">
-            <span class="text-[10px] font-bold uppercase text-amber-400 tracking-wider">Dados Operacionais Detalhados</span>
+          <div class="p-4 rounded-xl bg-sesi-navy/80 border border-sesi-cardBorder space-y-3">
+            <span class="text-[10px] font-bold uppercase text-amber-400 tracking-wider flex items-center gap-1.5">
+              <i class="fa-solid fa-scroll"></i> História do Caso & Evidências de Auditoria
+            </span>
             ${dossie.detalhes}
           </div>
         `;
@@ -1992,6 +2155,10 @@
                 ${stD2Badge}
                 ${stD3Badge}
               </div>
+              <!-- BOTÃO DE VISUALIZAÇÃO DIRETA DO DOSSIÊ PELO PROFESSOR -->
+              <button onclick="abrirModalDossie('${eq.ano}', '${eq.setorId || obterSetorFabrica(eq.equipe).id}', '${eq.equipe}')" title="Ver Dossiê/Estudo de Caso da Equipe" class="bg-sesi-navy hover:bg-sesi-primary text-sky-300 border border-sky-400/50 text-xs px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 font-bold shadow-md active:scale-95">
+                <i class="fa-solid fa-file-contract text-yellow-300"></i> Dossiê
+              </button>
               <!-- BOTÃO DE EDIÇÃO DESTACADO EM AZUL SKY -->
               <button onclick="abrirModalEditarProf('${eq.idDoc}')" title="Editar Projeto / Mudar Turma" class="bg-sky-600 hover:bg-sky-500 text-white border border-sky-400/50 text-xs px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 font-bold shadow-md active:scale-95">
                 <i class="fa-solid fa-pen-to-square"></i> Editar Turma/Projeto
