@@ -1586,6 +1586,7 @@
       const strSeg = String(seg).padStart(2, '0');
       
       const display = document.getElementById('prof-timer-display');
+      if (!display) return;
       display.innerText = `${strMin}:${strSeg}`;
 
       if (timerPitchSegundos <= 30 && timerPitchSegundos > 0) {
@@ -1599,27 +1600,21 @@
 
     function iniciarTimerPitch() {
       if (timerPitchInterval) return;
-      if (timerPitchSegundos === 0) timerPitchSegundos = 180;
-
       timerPitchInterval = setInterval(() => {
         if (timerPitchSegundos > 0) {
           timerPitchSegundos--;
           atualizarDisplayTimer();
         } else {
-          clearInterval(timerPitchInterval);
-          timerPitchInterval = null;
-          showToast("Tempo esgotado para o Pitch da Equipe!", "warning");
+          pausarTimerPitch();
+          showToast("⏱️ Tempo esgotado! Encerre a fala da equipe.", "warning");
         }
       }, 1000);
-
-      showToast("Cronômetro de 3 minutos iniciado!", "info");
     }
 
     function pausarTimerPitch() {
       if (timerPitchInterval) {
         clearInterval(timerPitchInterval);
         timerPitchInterval = null;
-        showToast("Cronômetro pausado.", "info");
       }
     }
 
@@ -1627,7 +1622,6 @@
       pausarTimerPitch();
       timerPitchSegundos = 180;
       atualizarDisplayTimer();
-      showToast("Cronômetro reiniciado para 03:00.", "info");
     }
 
     function reiniciarNovoProjeto() {
