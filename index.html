@@ -246,6 +246,40 @@
         <!-- Preenchido via JavaScript com o resumo auditado do setor -->
       </div>
 
+      <!-- CARD DE ALERTA DE PROJETO BLOQUEADO POR IA / PLÁGIO -->
+      <div id="box-bloqueado" class="hidden bg-gradient-to-b from-red-950/90 via-[#1a0505] to-red-950/90 rounded-2xl p-6 md:p-10 border-2 border-red-600/80 shadow-2xl space-y-6 text-center animate-pulse">
+        <div class="w-20 h-20 bg-red-600/20 text-red-500 rounded-full flex items-center justify-center mx-auto text-3xl md:text-4xl border-2 border-red-500 shadow-lg">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+        </div>
+        
+        <div class="space-y-3 max-w-xl mx-auto">
+          <span class="bg-red-900/60 text-red-300 border border-red-600 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest inline-block">
+            ⚠️ Bloqueio de Integridade Acadêmica
+          </span>
+          <h3 class="text-2xl md:text-3xl font-black text-white uppercase tracking-tight">
+            PROJETO BLOQUEADO PELO PROFESSOR
+          </h3>
+          <p class="text-sm md:text-base text-red-200 font-medium leading-relaxed bg-red-950/50 p-4 rounded-xl border border-red-800/60">
+            Este projeto foi <strong class="text-white underline decoration-red-500">BLOQUEADO</strong> por apresentar características de cópia ou geração automatizada por Inteligência Artificial (IA).
+          </p>
+        </div>
+
+        <div class="p-4 bg-[#001222] rounded-xl border border-red-900/50 max-w-lg mx-auto space-y-2">
+          <span class="text-xs font-bold text-amber-400 uppercase tracking-wider block">
+            <i class="fa-solid fa-pen-line mr-1"></i> Instrução Obrigatória
+          </span>
+          <p class="text-xs text-slate-200 font-semibold">
+            Inicie um novo projeto e desenvolva todas as etapas manualmente.
+          </p>
+        </div>
+
+        <div class="pt-2">
+          <button type="button" onclick="reiniciarNovoProjeto()" class="bg-gradient-to-r from-red-700 to-red-600 hover:from-red-600 hover:to-red-500 text-white font-extrabold px-8 py-4 rounded-xl shadow-xl text-sm transition transform active:scale-95 flex items-center justify-center gap-3 mx-auto border border-red-400/30">
+            <i class="fa-solid fa-rotate-left text-lg"></i> Voltar e Iniciar Novo Projeto
+          </button>
+        </div>
+      </div>
+
       <!-- FORMULÁRIO DAS ETAPAS DO DESAFIO -->
       <form id="form-missao" onsubmit="salvarRespostasEstudante(event)" class="space-y-6">
 
@@ -1006,9 +1040,27 @@
       document.getElementById('txt-equipe-titulo').innerText = `EQUIPE: ${equipeSessao.equipe}`;
       document.getElementById('txt-turma-sub').innerText = `Turma: ${equipeSessao.ano}º ${equipeSessao.turma} (${equipeSessao.turno}) | Integrantes: ${equipeSessao.integrantes.join(", ")}`;
 
+      const boxBloqueado = document.getElementById('box-bloqueado');
+      const formMissao = document.getElementById('form-missao');
+      const bannerSetor = document.getElementById('banner-setor-atribuido');
+      const cardDossieDia1 = document.getElementById('card-dossie-dia1');
+
+      // VERIFICAÇÃO DE PROJETO BLOQUEADO POR IA / PLÁGIO
+      if (equipeSessao.bloqueado) {
+        boxBloqueado.classList.remove('hidden');
+        formMissao.classList.add('hidden');
+        bannerSetor.classList.add('hidden');
+        cardDossieDia1.classList.add('hidden');
+        return;
+      } else {
+        boxBloqueado.classList.add('hidden');
+        formMissao.classList.remove('hidden');
+        bannerSetor.classList.remove('hidden');
+        cardDossieDia1.classList.remove('hidden');
+      }
+
       // Renderiza Banner do Setor Atribuído
       const setorObj = obterSetorFabrica(equipeSessao.equipe);
-      const bannerSetor = document.getElementById('banner-setor-atribuido');
       bannerSetor.className = `rounded-2xl p-6 border shadow-lg ${setorObj.bgClass}`;
       bannerSetor.innerHTML = `
         <div class="flex items-start gap-4">
@@ -1031,7 +1083,6 @@
 
       // Renderiza Dossiê em Destaque no topo do Dia 1
       const dossie = obterDossieFabrica(equipeSessao.ano, setorObj.id);
-      const cardDossieDia1 = document.getElementById('card-dossie-dia1');
       if (dossie) {
         cardDossieDia1.innerHTML = `
           <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
@@ -1542,41 +1593,41 @@
       } else if (timerPitchSegundos === 0) {
         display.className = "font-mono text-4xl md:text-5xl font-black text-red-500 tracking-wider bg-[#001222] px-6 py-2 rounded-2xl border border-red-500/80 animate-bounce";
       } else {
-        display.className = "font-mono text-4xl md:text-5xl font-black text-purple-300 tracking-wider bg-[#001222] px-6 py-2 rounded-2xl border border-purple-500/40 shadow-inner";
-      }
+    function reiniciarNovoProjeto() {
+      equipeSessao = null;
+      voltarInicio();
+      showToast("Sessão reiniciada. Inicie a identificação de um novo projeto autoral.", "info");
     }
 
-    function iniciarTimerPitch() {
-      if (timerPitchInterval) return;
-      if (timerPitchSegundos === 0) timerPitchSegundos = 180;
+    // =========================================================================
+    // ALTERNAR BLOQUEIO POR IA / PLÁGIO (MÓDULO PROFESSOR)
+    // =========================================================================
+    async function alternarBloqueioEquipe(idDoc, novoStatusBloqueio) {
+      const acaoTxt = novoStatusBloqueio ? "bloquear" : "desbloquear";
+      abrirModalConfirmacao(
+        novoStatusBloqueio ? "Bloquear Projeto (IA/Plágio)" : "Desbloquear Projeto",
+        `Deseja ${acaoTxt} o projeto da equipe ${idDoc}? ${novoStatusBloqueio ? 'Os alunos visualizarão o aviso de plágio e serão orientados a reiniciar.' : 'A equipe voltará a ter acesso ao projeto.'}`,
+        async () => {
+          try {
+            if (modoFirebase) {
+              await db.collection("entregas_sesi").doc(idDoc).update({ bloqueado: novoStatusBloqueio });
+            }
 
-      timerPitchInterval = setInterval(() => {
-        if (timerPitchSegundos > 0) {
-          timerPitchSegundos--;
-          atualizarDisplayTimer();
-        } else {
-          clearInterval(timerPitchInterval);
-          timerPitchInterval = null;
-          showToast("Tempo esgotado para o Pitch da Equipe!", "warning");
+            const itemLocal = localStorage.getItem(`sesi_app_${idDoc}`);
+            if (itemLocal) {
+              const parsed = JSON.parse(itemLocal);
+              parsed.bloqueado = novoStatusBloqueio;
+              localStorage.setItem(`sesi_app_${idDoc}`, JSON.stringify(parsed));
+            }
+
+            showToast(`Projeto da equipe ${idDoc} ${novoStatusBloqueio ? 'bloqueado por IA/Plágio' : 'desbloqueado'}!`, novoStatusBloqueio ? "warning" : "success");
+            carregarEntregasProfessor();
+          } catch (err) {
+            console.error("Erro ao alterar bloqueio do projeto:", err);
+            showToast("Erro ao atualizar o status de bloqueio no banco.", "error");
+          }
         }
-      }, 1000);
-
-      showToast("Cronômetro de 3 minutos iniciado!", "info");
-    }
-
-    function pausarTimerPitch() {
-      if (timerPitchInterval) {
-        clearInterval(timerPitchInterval);
-        timerPitchInterval = null;
-        showToast("Cronômetro pausado.", "info");
-      }
-    }
-
-    function resetarTimerPitch() {
-      pausarTimerPitch();
-      timerPitchSegundos = 180;
-      atualizarDisplayTimer();
-      showToast("Cronômetro reiniciado para 03:00.", "info");
+      );
     }
 
     // =========================================================================
@@ -1738,12 +1789,25 @@
           ? `<span class="bg-purple-950 text-purple-300 border border-purple-800 text-[10px] font-bold px-2 py-0.5 rounded-full"><i class="fa-solid fa-microphone"></i> Pitch OK</span>`
           : `<span class="bg-sesi-navy text-slate-500 border border-sesi-cardBorder text-[10px] font-bold px-2 py-0.5 rounded-full"><i class="fa-solid fa-lock"></i> Pitch</span>`;
 
+        const bloqueadoBadge = eq.bloqueado
+          ? `<span class="bg-red-950 text-red-300 border border-red-700 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full animate-pulse"><i class="fa-solid fa-ban"></i> BLOQUEADO IA/PLÁGIO</span>`
+          : '';
+
+        const btnBloqueio = eq.bloqueado
+          ? `<button onclick="alternarBloqueioEquipe('${eq.idDoc}', false)" title="Desbloquear Projeto" class="bg-emerald-950/80 hover:bg-emerald-900 text-emerald-300 border border-emerald-800/60 text-xs px-2.5 py-1 rounded-lg transition flex items-center gap-1 font-medium active:scale-95">
+              <i class="fa-solid fa-unlock"></i> Desbloquear
+             </button>`
+          : `<button onclick="alternarBloqueioEquipe('${eq.idDoc}', true)" title="Bloquear por IA/Plágio" class="bg-amber-950/80 hover:bg-amber-900 text-amber-300 border border-amber-800/60 text-xs px-2.5 py-1 rounded-lg transition flex items-center gap-1 font-medium active:scale-95">
+              <i class="fa-solid fa-ban"></i> Bloquear (IA)
+             </button>`;
+
         card.innerHTML = `
           <div class="flex flex-col md:flex-row justify-between md:items-center gap-2 border-b border-sesi-cardBorder pb-3">
             <div>
-              <div class="flex items-center gap-2">
+              <div class="flex flex-wrap items-center gap-2">
                 <h4 class="text-lg font-bold text-sky-400 font-mono tracking-wider">EQUIPE: ${eq.equipe}</h4>
                 <span class="text-[10px] bg-sesi-navy text-slate-300 px-2.5 py-0.5 rounded-full border border-sesi-cardBorder font-medium">${eq.setorNome || 'Setor Padrão'}</span>
+                ${bloqueadoBadge}
               </div>
               <p class="text-xs text-slate-400 mt-1">Integrantes: <strong class="text-slate-200">${eq.integrantes.join(", ")}</strong></p>
             </div>
@@ -1753,6 +1817,7 @@
                 ${stD2Badge}
                 ${stD3Badge}
               </div>
+              ${btnBloqueio}
               <button onclick="excluirEquipe('${eq.idDoc}')" title="Excluir Equipe" class="bg-red-950/80 hover:bg-red-900 text-red-300 border border-red-800/60 text-xs px-2.5 py-1 rounded-lg transition flex items-center gap-1 font-medium active:scale-95">
                 <i class="fa-solid fa-trash-can"></i> Excluir
               </button>
