@@ -90,6 +90,12 @@
 
       <!-- Ações do Cabeçalho -->
       <div class="flex items-center gap-2 md:gap-3">
+        <!-- Botão Dossiê Fixo no Cabeçalho (Exibido quando equipe estiver identificada) -->
+        <button id="btn-header-dossie" onclick="abrirModalDossie()" class="hidden bg-sky-600 hover:bg-sky-500 text-white text-xs md:text-sm px-3 py-2 rounded-xl border border-sky-400/40 transition flex items-center gap-1.5 shadow-md active:scale-95 font-bold animate-pulse">
+          <i class="fa-solid fa-file-contract text-yellow-300"></i>
+          <span>📄 Dossiê da Fábrica</span>
+        </button>
+
         <!-- Indicador de Banco de Dados -->
         <span id="badge-db-status" class="hidden md:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-sesi-primary text-sky-200 border border-sesi-cardBorder">
           <span class="w-2 h-2 rounded-full bg-sky-400"></span>
@@ -235,6 +241,11 @@
         <!-- Preenchido via JavaScript -->
       </div>
 
+      <!-- CARD DOSSIÊ EM DESTAQUE LOGO NO DIA 1 -->
+      <div id="card-dossie-dia1" class="bg-gradient-to-r from-sky-950/60 via-sesi-navy to-sky-950/60 rounded-2xl p-5 border border-sky-500/40 shadow-xl space-y-3">
+        <!-- Preenchido via JavaScript com o resumo auditado do setor -->
+      </div>
+
       <!-- FORMULÁRIO DAS ETAPAS DO DESAFIO -->
       <form id="form-missao" onsubmit="salvarRespostasEstudante(event)" class="space-y-6">
 
@@ -244,7 +255,7 @@
             <div>
               <span class="text-xs font-bold text-sky-400 uppercase tracking-wider">Encontro 1 (35 min)</span>
               <h3 class="text-xl font-bold text-white flex items-center gap-2 mt-0.5">
-                <i class="fa-solid fa-magnifying-glass text-sky-400"></i> FASE 1: Diagnóstico e Análise
+                <i class="fa-solid fa-magnifying-glass text-sky-400"></i> FASE 1: Diagnóstico e Análise do Dossiê
               </h3>
             </div>
             <span class="text-xs bg-sesi-navy text-slate-300 px-3 py-1 rounded-full border border-sesi-cardBorder w-fit">
@@ -296,15 +307,15 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
               <div class="bg-[#001222] p-3 rounded-lg border border-sesi-cardBorder">
                 <span class="font-bold text-sky-400 block mb-1">1. O Problema (30 seg)</span>
-                <p class="text-slate-300">Apresente o setor sorteado e o gargalo tecnológico/humano/ambiental identificado na fábrica EcoTech.</p>
+                <p class="text-slate-300">Apresente o setor sorteado e o gargalo tecnológico/humano/ambiental identificado no Dossiê EcoTech.</p>
               </div>
               <div class="bg-[#001222] p-3 rounded-lg border border-sesi-cardBorder">
                 <span class="font-bold text-amber-400 block mb-1">2. A Solução (1m30s)</span>
-                <p class="text-slate-300">Defenda a recomendação da equipe (confiabilidade de dados, ação verde ou ética no trabalho).</p>
+                <p class="text-slate-300">Defenda a recomendação da equipe (confiabilidade de dados, ação verde ou transição ética no trabalho).</p>
               </div>
               <div class="bg-[#001222] p-3 rounded-lg border border-sesi-cardBorder">
                 <span class="font-bold text-emerald-400 block mb-1">3. O Impacto (1 min)</span>
-                <p class="text-slate-300">Demonstre o ganho para a empresa, a segurança dos arquivos e o valor para o futuro das pessoas.</p>
+                <p class="text-slate-300">Demonstre o ganho financeiro para a fábrica, segurança jurídica e valorização das pessoas.</p>
               </div>
             </div>
           </div>
@@ -350,6 +361,9 @@
         <div class="flex flex-wrap gap-2">
           <button onclick="gerarDadosDemonstrativos()" class="text-xs bg-sesi-navy hover:bg-sesi-primary text-amber-400 border border-amber-500/30 px-3.5 py-2 rounded-xl font-medium transition flex items-center gap-1.5">
             <i class="fa-solid fa-wand-magic-sparkles"></i> Gerar Dados de Exemplo
+          </button>
+          <button onclick="excluirTodasEntregasTurmaAtual()" class="text-xs bg-red-950/80 hover:bg-red-900 text-red-300 border border-red-700/50 px-3.5 py-2 rounded-xl font-medium transition flex items-center gap-1.5">
+            <i class="fa-solid fa-trash-can"></i> Limpar Turma Atual
           </button>
           <button onclick="sairProfessor()" class="text-xs bg-sesi-navy hover:bg-sesi-primary text-slate-300 border border-sesi-cardBorder px-3.5 py-2 rounded-xl font-medium transition">
             <i class="fa-solid fa-right-from-bracket mr-1"></i> Sair
@@ -431,6 +445,37 @@
 
   </main>
 
+  <!-- MODAL DE DOSSIÊ COMPLETO DA FÁBRICA ECOTECH -->
+  <div id="modal-dossie-fabrica" class="fixed inset-0 bg-[#001122]/90 backdrop-blur-md flex items-center justify-center p-4 z-50 hidden transition-opacity">
+    <div class="bg-sesi-cardBg border border-sky-500/50 rounded-2xl max-w-2xl w-full p-6 md:p-8 space-y-5 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+      
+      <button onclick="fecharModalDossie()" class="absolute top-4 right-4 text-slate-400 hover:text-white bg-sesi-navy p-2 rounded-xl border border-sesi-cardBorder">
+        <i class="fa-solid fa-xmark text-lg"></i>
+      </button>
+
+      <div class="flex items-center gap-3 border-b border-sesi-cardBorder pb-4">
+        <div class="p-3 bg-sky-500/10 text-sky-400 rounded-xl text-xl border border-sky-500/30">
+          <i class="fa-solid fa-file-contract"></i>
+        </div>
+        <div>
+          <span class="text-[10px] font-bold text-sky-400 uppercase tracking-widest block">Documentação Técnica Oficial</span>
+          <h3 id="modal-dossie-titulo" class="text-xl font-bold text-white">Dossiê Industrial Auditado — EcoTech</h3>
+        </div>
+      </div>
+
+      <!-- Conteúdo do Dossiê -->
+      <div id="modal-dossie-corpo" class="space-y-4 text-xs leading-relaxed text-slate-200">
+        <!-- Preenchido dinamicamente pelo JS -->
+      </div>
+
+      <div class="pt-2 border-t border-sesi-cardBorder text-right">
+        <button onclick="fecharModalDossie()" class="bg-gradient-to-r from-sesi-primary to-sesi-secondary hover:from-sesi-secondary hover:to-sky-600 text-white text-xs font-bold px-6 py-3 rounded-xl shadow-lg transition">
+          Entendido, Voltar ao Desafio
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- MODAL DE LOGIN PROFESSOR -->
   <div id="modal-prof-login" class="fixed inset-0 bg-[#001122]/85 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden transition-opacity">
     <div class="bg-sesi-cardBg border border-sesi-cardBorder rounded-2xl max-w-md w-full p-6 md:p-8 space-y-5 shadow-2xl relative">
@@ -468,6 +513,25 @@
           </button>
         </div>
       </form>
+    </div>
+  </div>
+
+  <!-- MODAL DE CONFIRMAÇÃO DE EXCLUSÃO CUSTOMIZADO -->
+  <div id="modal-confirmacao" class="fixed inset-0 bg-[#001122]/85 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden transition-opacity">
+    <div class="bg-sesi-cardBg border border-red-700/50 rounded-2xl max-w-sm w-full p-6 space-y-4 shadow-2xl relative text-center">
+      <div class="w-12 h-12 bg-red-500/10 text-red-400 rounded-full flex items-center justify-center mx-auto text-xl border border-red-500/30">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+      </div>
+      <h3 id="modal-confirm-titulo" class="text-lg font-bold text-white">Confirmar Exclusão</h3>
+      <p id="modal-confirm-desc" class="text-xs text-slate-300">Tem certeza que deseja excluir este registro?</p>
+      <div class="flex gap-3 pt-2">
+        <button onclick="fecharModalConfirmacao()" class="w-1/2 bg-sesi-navy hover:bg-sesi-primary text-slate-300 text-xs font-semibold py-2.5 rounded-xl border border-sesi-cardBorder transition">
+          Cancelar
+        </button>
+        <button id="btn-modal-confirmar-acao" class="w-1/2 bg-red-700 hover:bg-red-600 text-white text-xs font-bold py-2.5 rounded-xl transition shadow-lg">
+          Sim, Excluir
+        </button>
+      </div>
     </div>
   </div>
 
@@ -560,6 +624,186 @@
       return setores[index];
     }
 
+    // BASE DE DADOS INTEGRAL DE DOSSIÊS AUDITADOS DA ECOTECH (POR ANO E SETOR)
+    function obterDossieFabrica(ano, setorId) {
+      const repositorio = {
+        "1": {
+          "A": {
+            cod: "AUD-2026-1A",
+            titulo: "Dossiê de Diagnóstico: Integridade de Dados na Montagem Robótica",
+            resumo: "Auditoria revelou que manuais técnicos não homologados e códigos de braços robóticos copiados de fóruns abertos geraram 14 paradas não programadas e prejuízo de R$ 38.500,00 no mês.",
+            detalhes: `
+              <div class="space-y-2">
+                <p><strong>Relatório de Auditoria Digital nº 1A/2026:</strong></p>
+                <ul class="list-disc pl-4 space-y-1 text-slate-300">
+                  <li><strong>Gargalo Identificado:</strong> O setor de usinagem operava com parâmetros extraídos de um vídeo de rede social sem assinatura técnica de engenheiro responsável.</li>
+                  <li><strong>Impacto Financeiro:</strong> R$ 38.500,00 perdidos em refugo de peças usinadas por erro de calibração.</li>
+                  <li><strong>Dilema da Nuvem:</strong> Arquivos de programação CNC estavam salvos em pastas pessoais dos técnicos, sem permissão centralizada no drive oficial da EcoTech.</li>
+                </ul>
+              </div>
+            `
+          },
+          "B": {
+            cod: "AUD-2026-1B",
+            titulo: "Dossiê de Diagnóstico: Vazio de Confiabilidade no Almoxarifado Inteligente",
+            resumo: "Blog não oficial divulgou fake news sobre exigência legal de veículos autônomos de R$ 500 mil. A equipe de compras quase efetuou o pedido sem checar fontes governamentais.",
+            detalhes: `
+              <div class="space-y-2">
+                <p><strong>Relatório de Auditoria de Dados nº 1B/2026:</strong></p>
+                <ul class="list-disc pl-4 space-y-1 text-slate-300">
+                  <li><strong>Inconsistência de Informação:</strong> Notícia falsa circulou via WhatsApp corporativo alegando obrigatoriedade iminente de substituição da frota.</li>
+                  <li><strong>Vazamento de Planilha:</strong> O inventário de insumos em nuvem estava configurado com permissão "Público para Leitura e Edição", expondo fornecedores estratégicos.</li>
+                </ul>
+              </div>
+            `
+          },
+          "C": {
+            cod: "AUD-2026-1C",
+            titulo: "Dossiê de Diagnóstico: Segurança da Informação & LGPD no RH",
+            resumo: "Boatos virtuais sobre exames médicos obrigatórios em aplicativo não auditado causaram pânico entre 45 colaboradores do chão de fábrica.",
+            detalhes: `
+              <div class="space-y-2">
+                <p><strong>Relatório de Auditoria Humana nº 1C/2026:</strong></p>
+                <ul class="list-disc pl-4 space-y-1 text-slate-300">
+                  <li><strong>Infodemia Interna:</strong> Circulação de mensagens falsas sem link ou autor oficial reduziram o engajamento nos treinamentos de segurança em 30%.</li>
+                  <li><strong>Direitos Autorais:</strong> Apostilas de treinamento contavam com imagens e textos copiados sem referência bibliográfica aos autores originais.</li>
+                </ul>
+              </div>
+            `
+          },
+          "D": {
+            cod: "AUD-2026-1D",
+            titulo: "Dossiê de Diagnóstico: Fake News de Energia na Manutenção",
+            resumo: "Proposta não verificada de economizador elétrico 'milagroso' prometia 90% de redução na conta de luz da subestação, violando leis fundamentais da física.",
+            detalhes: `
+              <div class="space-y-2">
+                <p><strong>Relatório de Auditoria Elétrica nº 1D/2026:</strong></p>
+                <ul class="list-disc pl-4 space-y-1 text-slate-300">
+                  <li><strong>Ausência de Protocolo Técnico:</strong> Schemas elétricos da subestação baixados de fóruns sem validação da fábrica causaram curto em 2 compressores.</li>
+                  <li><strong>Armazenamento Desorganizado:</strong> Registros de manutenção preditiva gravados localmente em computadores de oficina, impedindo backup em nuvem.</li>
+                </ul>
+              </div>
+            `
+          }
+        },
+        "2": {
+          "A": {
+            cod: "AUD-2026-2A",
+            titulo: "Dossiê de Auditoria ESG: Desperdício de Insumos na Usinagem",
+            resumo: "A usinagem descartou 1,4 tonelada de cavaco metálico e 850 litros de óleo solúvel contaminado em aterro comum no último trimestre.",
+            detalhes: `
+              <div class="space-y-2">
+                <p><strong>Balanço de Sustentabilidade nº 2A/2026:</strong></p>
+                <ul class="list-disc pl-4 space-y-1 text-slate-300">
+                  <li><strong>Custo do Resíduo:</strong> R$ 22.400,00 gastos em multas de descarte e compra de lubrificantes virgens.</li>
+                  <li><strong>Oportunidade Verde:</strong> Implantação de sistema de filtragem de óleo e venda de sucata de alumínio para reciclagem com payback de 4 meses.</li>
+                </ul>
+              </div>
+            `
+          },
+          "B": {
+            cod: "AUD-2026-2B",
+            titulo: "Dossiê de Auditoria ESG: Pegada de Carbono no Almoxarifado",
+            resumo: "O setor logístico utilizou 3.200 caixas de papelão descartáveis e 450 kg de filme plástico bolha não reciclável em apenas 30 dias.",
+            detalhes: `
+              <div class="space-y-2">
+                <p><strong>Balanço de Pegada Ecológica nº 2B/2026:</strong></p>
+                <ul class="list-disc pl-4 space-y-1 text-slate-300">
+                  <li><strong>Emissão de CO2:</strong> Incremento de 18% na pegada de carbono da fábrica por uso de embalagens descartáveis entre unidades.</li>
+                  <li><strong>Logística Reversa:</strong> Proposta de caixas plásticas de polipropileno retornáveis reduz custo recorrente em 65%.</li>
+                </ul>
+              </div>
+            `
+          },
+          "C": {
+            cod: "AUD-2026-2C",
+            titulo: "Dossiê de Auditoria ESG: Desperdício de Papel e Plástico no RH",
+            resumo: "Impressão de 12.000 folhas de papel A4/mês para folhas de ponto e descarte de 4.500 copos plásticos nos refeitórios.",
+            detalhes: `
+              <div class="space-y-2">
+                <p><strong>Balanço de Consumo Interno nº 2C/2026:</strong></p>
+                <ul class="list-disc pl-4 space-y-1 text-slate-300">
+                  <li><strong>Custo Anual de Impressões:</strong> R$ 14.800,00 entre papel e cartuchos de tinta.</li>
+                  <li><strong>Plano Zero Plástico:</strong> Substituição por canecas térmicas reutilizáveis e digitalização 100% de contratos de trabalho.</li>
+                </ul>
+              </div>
+            `
+          },
+          "D": {
+            cod: "AUD-2026-2D",
+            titulo: "Dossiê de Auditoria ESG: Ineficiência Energética na Subestação",
+            resumo: "Vazamento contínuo na rede de ar comprimido e motores antigos operando com fator de potência de 0,72 geraram R$ 19.200/mês em desperdício elétrico.",
+            detalhes: `
+              <div class="space-y-2">
+                <p><strong>Balanço Energético nº 2D/2026:</strong></p>
+                <ul class="list-disc pl-4 space-y-1 text-slate-300">
+                  <li><strong>Desperdício Medido:</strong> 18.500 kWh jogados fora por vazamentos pneumáticos e lâmpadas fluorescentes antigas.</li>
+                  <li><strong>Projeto Fotovoltaico:</strong> Instalação de painéis solares no telhado do galpão paga investimento em 18 meses.</li>
+                </ul>
+              </div>
+            `
+          }
+        },
+        "3": {
+          "A": {
+            cod: "AUD-2026-3A",
+            titulo: "Dossiê Estratégico: Automação Robótica vs. Transição Justa",
+            resumo: "A aquisição de 4 novos braços robóticos de alta precisão ameaça o emprego de 12 operários com mais de 15 anos de fábrica.",
+            detalhes: `
+              <div class="space-y-2">
+                <p><strong>Relatório de Liderança & Carreira nº 3A/2026:</strong></p>
+                <ul class="list-disc pl-4 space-y-1 text-slate-300">
+                  <li><strong>O Conflito Executivo:</strong> A diretoria financeira sugere demissão sumária; o comitê de ética propõe plano de requalificação técnica no SENAI.</li>
+                  <li><strong>Competências Críticas:</strong> Transição de operário braçal para programador/mantenedor de células robotizadas.</li>
+                </ul>
+              </div>
+            `
+          },
+          "B": {
+            cod: "AUD-2026-3B",
+            titulo: "Dossiê Estratégico: Algoritmos de Estoque & Impacto Social",
+            resumo: "Novo sistema de IA para expedição reduz em 70% a necessidade de conferentes manuais, gerando apreensão na equipe.",
+            detalhes: `
+              <div class="space-y-2">
+                <p><strong>Relatório de Liderança & Carreira nº 3B/2026:</strong></p>
+                <ul class="list-disc pl-4 space-y-1 text-slate-300">
+                  <li><strong>Desafio Humanizado:</strong> Mapear Soft Skills (resolução de problemas, visão sistêmica) para realocar colaboradores em áreas de planejamento logístico.</li>
+                </ul>
+              </div>
+            `
+          },
+          "C": {
+            cod: "AUD-2026-3C",
+            titulo: "Dossiê Estratégico: Viés Algorítmico na Seleção de Pessoas",
+            resumo: "Software de IA para recrutamento automático eliminou 100% dos candidatos sem ensino superior de elite, descartando técnicos altamente qualificados formados no SENAI.",
+            detalhes: `
+              <div class="space-y-2">
+                <p><strong>Relatório de Liderança & Carreira nº 3C/2026:</strong></p>
+                <ul class="list-disc pl-4 space-y-1 text-slate-300">
+                  <li><strong>Dilema Ético do Gestor:</strong> Como intervir nos critérios do algoritmo para garantir diversidade, equidade e valorização do ensino técnico.</li>
+                </ul>
+              </div>
+            `
+          },
+          "D": {
+            cod: "AUD-2026-3D",
+            titulo: "Dossiê Estratégico: Segurança do Trabalho vs. Metas de Lucro",
+            resumo: "Sensores IoT detectaram superaquecimento em transformador principal. Parar o equipamento evita explosão, mas paralisa a fábrica por 8h cancelando o bônus dos funcionários.",
+            detalhes: `
+              <div class="space-y-2">
+                <p><strong>Relatório de Liderança & Carreira nº 3D/2026:</strong></p>
+                <ul class="list-disc pl-4 space-y-1 text-slate-300">
+                  <li><strong>Decisão sob Pressão:</strong> Tomada de atitude ética da equipe de manutenção priorizando a integridade física em detrimento do bônus financeiro imediato.</li>
+                </ul>
+              </div>
+            `
+          }
+        }
+      };
+
+      return repositorio[ano] ? repositorio[ano][setorId] : null;
+    }
+
     function atualizarPreviewSetor(valor) {
       const txt = document.getElementById('txt-preview-setor');
       const setor = obterSetorFabrica(valor);
@@ -625,10 +869,39 @@
       document.getElementById('modal-prof-login').classList.add('hidden');
     }
 
+    function abrirModalDossie() {
+      if (!equipeSessao) {
+        showToast("Identifique a equipe primeiro para abrir o dossiê do seu setor.", "warning");
+        return;
+      }
+      const setorObj = obterSetorFabrica(equipeSessao.equipe);
+      const dossie = obterDossieFabrica(equipeSessao.ano, setorObj.id);
+
+      if (dossie) {
+        document.getElementById('modal-dossie-titulo').innerText = `${dossie.cod} — ${dossie.titulo}`;
+        document.getElementById('modal-dossie-corpo').innerHTML = `
+          <div class="p-4 rounded-xl bg-[#001222] border border-sesi-cardBorder space-y-3">
+            <span class="text-[10px] font-bold uppercase text-sky-400 tracking-wider">Síntese Executiva de Auditoria</span>
+            <p class="text-xs text-slate-100 font-medium leading-relaxed">${dossie.resumo}</p>
+          </div>
+          <div class="p-4 rounded-xl bg-sesi-navy/80 border border-sesi-cardBorder space-y-2">
+            <span class="text-[10px] font-bold uppercase text-amber-400 tracking-wider">Dados Operacionais Detalhados</span>
+            ${dossie.detalhes}
+          </div>
+        `;
+        document.getElementById('modal-dossie-fabrica').classList.remove('hidden');
+      }
+    }
+
+    function fecharModalDossie() {
+      document.getElementById('modal-dossie-fabrica').classList.add('hidden');
+    }
+
     function voltarInicio() {
       document.getElementById('sec-desafio').classList.add('hidden');
       document.getElementById('sec-professor').classList.add('hidden');
       document.getElementById('sec-identificacao').classList.remove('hidden');
+      document.getElementById('btn-header-dossie').classList.add('hidden');
     }
 
     function autenticarProfessor(e) {
@@ -641,6 +914,7 @@
         document.getElementById('sec-identificacao').classList.add('hidden');
         document.getElementById('sec-desafio').classList.add('hidden');
         document.getElementById('sec-professor').classList.remove('hidden');
+        document.getElementById('btn-header-dossie').classList.add('hidden');
         showToast("Acesso liberado. Bem-vindo, Professor Ricardo!", "success");
         carregarEntregasProfessor();
       } else {
@@ -720,6 +994,7 @@
     function renderizarPainelDesafio() {
       document.getElementById('sec-identificacao').classList.add('hidden');
       document.getElementById('sec-desafio').classList.remove('hidden');
+      document.getElementById('btn-header-dossie').classList.remove('hidden');
 
       const titulosJornada = {
         "1": "1º ANO — DETETIVES DA INFORMAÇÃO & NUVEM",
@@ -753,6 +1028,26 @@
           </div>
         </div>
       `;
+
+      // Renderiza Dossiê em Destaque no topo do Dia 1
+      const dossie = obterDossieFabrica(equipeSessao.ano, setorObj.id);
+      const cardDossieDia1 = document.getElementById('card-dossie-dia1');
+      if (dossie) {
+        cardDossieDia1.innerHTML = `
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+            <div class="space-y-1">
+              <span class="text-[10px] font-bold text-sky-300 uppercase tracking-widest flex items-center gap-1.5">
+                <i class="fa-solid fa-file-contract text-yellow-300"></i> Dossiê de Auditoria da Fábrica EcoTech (Disponível nos 3 Dias)
+              </span>
+              <h4 class="text-sm font-bold text-white">${dossie.cod} — ${dossie.titulo}</h4>
+              <p class="text-xs text-slate-300 line-clamp-2">${dossie.resumo}</p>
+            </div>
+            <button type="button" onclick="abrirModalDossie()" class="bg-sky-600 hover:bg-sky-500 text-white text-xs font-bold px-4 py-2.5 rounded-xl border border-sky-400/50 transition whitespace-nowrap shadow-md active:scale-95 flex items-center gap-1.5">
+              <i class="fa-solid fa-eye"></i> Ler Dossiê Completo
+            </button>
+          </div>
+        `;
+      }
 
       // Atualiza Pílulas de Status e Bloqueios
       const pillD1 = document.getElementById('st-pill-dia1');
@@ -837,7 +1132,7 @@
             <div class="space-y-2">
               <label class="block text-xs font-semibold text-slate-200">1.2 Checagem de Confiabilidade — Linha de Usinagem:</label>
               <p class="text-xs text-slate-400 leading-relaxed">
-                Surgiu um vídeo afirmando: <em>"Nova garra robótica usa IA sem precisar de nenhuma calibração prévia ou manutenção em qualquer fábrica."</em><br>
+                Com base no Dossiê (AUD-2026-1A), um vídeo prometia <em>"garras robóticas sem calibração"</em> gerando R$ 38.500 de refugo.<br>
                 Qual a confiabilidade desta fonte? Quais passos a equipe deve seguir para validar a procedência desse equipamento industrial?
               </p>
               <textarea id="q2_f1" rows="3" required placeholder="Análise de autoria, data e fontes oficiais..." class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-3 text-xs text-slate-200 focus:border-sky-400 focus:outline-none"></textarea>
@@ -872,8 +1167,7 @@
             <div class="space-y-2">
               <label class="block text-xs font-semibold text-slate-200">1.2 Notícia Falsa no Almoxarifado Inteligente:</label>
               <p class="text-xs text-slate-400 leading-relaxed">
-                Um blog não verificado publicou: <em>"Caminhões autônomos de entrega serão obrigatórios por lei em todas as indústrias brasileiras a partir do mês que vem."</em><br>
-                Analise por que essa informação é sensacionalista ou falsa.
+                Com base no Dossiê (AUD-2026-1B), um blog divulgou que veículos de R$ 500 mil seriam obrigatórios. Analise por que essa informação é sensacionalista ou falsa.
               </p>
               <textarea id="q2_f1" rows="3" required placeholder="Avalie autoria, origem e lógica da notícia..." class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-3 text-xs text-slate-200 focus:border-sky-400 focus:outline-none"></textarea>
             </div>
@@ -907,8 +1201,7 @@
             <div class="space-y-2">
               <label class="block text-xs font-semibold text-slate-200">1.2 Boato em Redes Sociais no RH:</label>
               <p class="text-xs text-slate-400 leading-relaxed">
-                Uma mensagem de aplicativo sem link oficial diz: <em>"Todos os exames médicos dos trabalhadores devem ser gravados em aplicativo de terceiro não auditado."</em><br>
-                Como verificar a origem e evitar espalhar desinformação dentro da empresa?
+                Conforme o Dossiê (AUD-2026-1C), mensagens sem link oficial geraram pânico sobre exames médicos. Como verificar a origem e evitar espalhar desinformação?
               </p>
               <textarea id="q2_f1" rows="3" required placeholder="Passos para verificação de autoria e segurança..." class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-3 text-xs text-slate-200 focus:border-sky-400 focus:outline-none"></textarea>
             </div>
@@ -942,8 +1235,7 @@
             <div class="space-y-2">
               <label class="block text-xs font-semibold text-slate-200">1.2 Fake News sobre Eficiência Energética:</label>
               <p class="text-xs text-slate-400 leading-relaxed">
-                Um artigo sem data promete: <em>"Aparelho caseiro reduz 90% da conta de luz industrial sem alterar nada na fábrica."</em><br>
-                Por que essa afirmação desrespeita princípios da física e da checagem de fatos?
+                Segundo o Dossiê (AUD-2026-1D), um economizador elétrico 'milagroso' prometia 90% de redução. Por que essa afirmação desrespeita princípios da física?
               </p>
               <textarea id="q2_f1" rows="3" required placeholder="Análise técnica e de fonte..." class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-3 text-xs text-slate-200 focus:border-sky-400 focus:outline-none"></textarea>
             </div>
@@ -973,14 +1265,14 @@
             <div class="space-y-2">
               <label class="block text-xs font-semibold text-slate-200">1.1 Diagnóstico de Desperdício na Usinagem:</label>
               <p class="text-xs text-slate-400 leading-relaxed">
-                Na linha de usinagem, há grande descarte de cavacos de metal e óleo solúvel contaminado. Qual o impacto ambiental e financeiro desse descarte incorreto?
+                Conforme Dossiê AUD-2026-2A, a fábrica gerou 1,4t de cavacos e 850L de óleo contaminado (R$ 22.400 em custos). Qual o impacto ambiental desse descarte?
               </p>
               <textarea id="q1_f1" rows="3" required placeholder="Análise de resíduos no Setor A..." class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-3 text-xs text-slate-200 focus:border-sky-400 focus:outline-none"></textarea>
             </div>
             <div class="space-y-2">
               <label class="block text-xs font-semibold text-slate-200">1.2 Economia Circular na Usinagem:</label>
               <p class="text-xs text-slate-400 leading-relaxed">
-                Proponha 2 ações práticas para reenviar cavacos de alumínio/aço para fundições parceiras e filtragem/reutilização de lubrificantes.
+                Proponha 2 ações práticas para reenviar cavacos para fundições e implantar filtragem/reutilização de lubrificantes.
               </p>
               <textarea id="q2_f1" rows="3" required placeholder="Propostas de reutilização..." class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-3 text-xs text-slate-200 focus:border-sky-400 focus:outline-none"></textarea>
             </div>
@@ -999,7 +1291,7 @@
             <div class="space-y-2">
               <label class="block text-xs font-semibold text-slate-200">1.1 Pegada Ecológica no Almoxarifado:</label>
               <p class="text-xs text-slate-400 leading-relaxed">
-                O almoxarifado usa milhares de caixas de papelão descartáveis e filme plástico bolha por mês. Como isso afeta a pegada de carbono da logística?
+                Segundo o Dossiê AUD-2026-2B, o consumo de 3.200 caixas de papelão descartáveis aumentou em 18% as emissões de CO2. Analise os impactos.
               </p>
               <textarea id="q1_f1" rows="3" required placeholder="Análise ambiental da embalagem..." class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-3 text-xs text-slate-200 focus:border-sky-400 focus:outline-none"></textarea>
             </div>
@@ -1025,7 +1317,7 @@
             <div class="space-y-2">
               <label class="block text-xs font-semibold text-slate-200">1.1 Desperdício de Insumos de Escritório e RH:</label>
               <p class="text-xs text-slate-400 leading-relaxed">
-                O RH imprime milhares de folhas de papel para folhas de ponto e apostilas e consome copos plásticos descartáveis nos treinamentos. Qual o diagnóstico?
+                O Dossiê AUD-2026-2C registrou R$ 14.800/ano em impressões desnecessárias e 4.500 copos descartáveis. Qual o diagnóstico dessa cultura?
               </p>
               <textarea id="q1_f1" rows="3" required placeholder="Análise do desperdício no RH..." class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-3 text-xs text-slate-200 focus:border-sky-400 focus:outline-none"></textarea>
             </div>
@@ -1051,7 +1343,7 @@
             <div class="space-y-2">
               <label class="block text-xs font-semibold text-slate-200">1.1 Diagnóstico de Ineficiência Energética:</label>
               <p class="text-xs text-slate-400 leading-relaxed">
-                Compressores com vazamento de ar comprimido e motores elétricos antigos operando com baixo fator de potência. Qual o custo ecológico e financeiro?
+                Conforme Dossiê AUD-2026-2D, vazamentos pneumáticos geraram R$ 19.200/mês em desperdício (18.500 kWh). Qual o custo ecológico?
               </p>
               <textarea id="q1_f1" rows="3" required placeholder="Diagnóstico de energia do Setor D..." class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-3 text-xs text-slate-200 focus:border-sky-400 focus:outline-none"></textarea>
             </div>
@@ -1090,7 +1382,7 @@
             <div class="space-y-2">
               <label class="block text-xs font-semibold text-slate-200">2.1 Dilema Ético — Demissão x Requalificação:</label>
               <p class="text-xs text-slate-400 leading-relaxed">
-                Cenário: <em>A EcoTech vai adquirir 4 braços robóticos. A empresa deve demitir 10 operários antigos ou criar uma célula de qualificação técnica no SESI/SENAI para formá-los em mantenedores de robôs?</em> Justifique o parecer.
+                Com base no Dossiê AUD-2026-3A (12 operários ameaçados por robôs): <em>A EcoTech deve demitir os operários antigos ou criar uma célula de requalificação no SENAI?</em> Justifique.
               </p>
               <textarea id="q1_f2" rows="3" placeholder="Parecer ético da equipe..." class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-3 text-xs text-slate-200 focus:border-amber-400 focus:outline-none"></textarea>
             </div>
@@ -1109,7 +1401,7 @@
             <div class="space-y-2">
               <label class="block text-xs font-semibold text-slate-200">2.1 Dilema Ético — Automação de Estoque:</label>
               <p class="text-xs text-slate-400 leading-relaxed">
-                Cenário: <em>Um software com IA para gestão de estoque reduz a necessidade de conferentes de inventário. Qual recomendação a equipe faz para garantir a transição justa dos trabalhadores?</em>
+                Com base no Dossiê AUD-2026-3B (70% menos conferentes manuais): <em>Qual recomendação a equipe faz para garantir a transição justa dos trabalhadores?</em>
               </p>
               <textarea id="q1_f2" rows="3" placeholder="Parecer ético..." class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-3 text-xs text-slate-200 focus:border-amber-400 focus:outline-none"></textarea>
             </div>
@@ -1128,7 +1420,7 @@
             <div class="space-y-2">
               <label class="block text-xs font-semibold text-slate-200">2.1 Dilema Ético — Algoritmos de Seleção:</label>
               <p class="text-xs text-slate-400 leading-relaxed">
-                Cenário: <em>A IA de recrutamento rejeitou candidatos sem diploma de faculdade de elite, eliminando talentos formados no SENAI. Como a liderança de RH deve intervir com ética?</em>
+                Conforme Dossiê AUD-2026-3C (IA eliminou técnicos do SENAI por falta de diploma de elite): <em>Como a liderança de RH deve intervir com ética e equidade?</em>
               </p>
               <textarea id="q1_f2" rows="3" placeholder="Parecer sobre equidade e ética..." class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-3 text-xs text-slate-200 focus:border-amber-400 focus:outline-none"></textarea>
             </div>
@@ -1147,7 +1439,7 @@
             <div class="space-y-2">
               <label class="block text-xs font-semibold text-slate-200">2.1 Dilema Ético — Segurança vs Meta de Produção:</label>
               <p class="text-xs text-slate-400 leading-relaxed">
-                Cenário: <em>O sensor indica que uma máquina pode falhar. Parar a máquina reduz a produção e o bônus financeiro dos colegas no mês. Qual a atitude ética do profissional de manutenção?</em>
+                Conforme Dossiê AUD-2026-3D (parar transformador evita desastre mas cancela bônus): <em>Qual a atitude ética inegociável do profissional de manutenção?</em>
               </p>
               <textarea id="q1_f2" rows="3" placeholder="Decisão ética fundamentada..." class="w-full bg-[#001222] border border-sesi-cardBorder rounded-xl p-3 text-xs text-slate-200 focus:border-amber-400 focus:outline-none"></textarea>
             </div>
@@ -1227,6 +1519,7 @@
     function voltarIdentificacao() {
       document.getElementById('sec-desafio').classList.add('hidden');
       document.getElementById('sec-identificacao').classList.remove('hidden');
+      document.getElementById('btn-header-dossie').classList.add('hidden');
     }
 
     // =========================================================================
@@ -1284,6 +1577,95 @@
       timerPitchSegundos = 180;
       atualizarDisplayTimer();
       showToast("Cronômetro reiniciado para 03:00.", "info");
+    }
+
+    // =========================================================================
+    // MODAL DE CONFIRMAÇÃO DE EXCLUSÃO (INTERFACE PERSONALIZADA)
+    // =========================================================================
+    let confirmacaoAcaoCallback = null;
+
+    function abrirModalConfirmacao(titulo, descricao, callback) {
+      document.getElementById('modal-confirm-titulo').innerText = titulo;
+      document.getElementById('modal-confirm-desc').innerText = descricao;
+      confirmacaoAcaoCallback = callback;
+      document.getElementById('modal-confirmacao').classList.remove('hidden');
+
+      const btnConfirmar = document.getElementById('btn-modal-confirmar-acao');
+      btnConfirmar.onclick = async () => {
+        if (confirmacaoAcaoCallback) {
+          await confirmacaoAcaoCallback();
+        }
+        fecharModalConfirmacao();
+      };
+    }
+
+    function fecharModalConfirmacao() {
+      document.getElementById('modal-confirmacao').classList.add('hidden');
+      confirmacaoAcaoCallback = null;
+    }
+
+    function excluirEquipe(idDoc) {
+      abrirModalConfirmacao(
+        "Excluir Equipe",
+        `Tem certeza que deseja excluir permanentemente a entrega da equipe (${idDoc}) do banco de dados?`,
+        async () => {
+          try {
+            if (modoFirebase) {
+              await db.collection("entregas_sesi").doc(idDoc).delete();
+            }
+            localStorage.removeItem(`sesi_app_${idDoc}`);
+            showToast(`Equipe ${idDoc} excluída com sucesso!`, "success");
+            carregarEntregasProfessor();
+          } catch (err) {
+            console.error("Erro ao excluir equipe:", err);
+            showToast("Erro ao excluir a equipe do banco.", "error");
+          }
+        }
+      );
+    }
+
+    function excluirTodasEntregasTurmaAtual() {
+      const ano = document.getElementById('prof-filtro-ano').value;
+      const turno = document.getElementById('prof-filtro-turno').value;
+      const turma = document.getElementById('prof-filtro-turma').value;
+      const chaveTurma = `${ano}_${turno}_${turma}`;
+
+      abrirModalConfirmacao(
+        "Limpar Turma Atual",
+        `Tem certeza que deseja EXCLUIR TODAS as equipes registradas para a Turma ${ano}º${turma} (${turno})?`,
+        async () => {
+          try {
+            if (modoFirebase) {
+              const snap = await db.collection("entregas_sesi").where("chaveTurma", "==", chaveTurma).get();
+              const batch = db.batch();
+              snap.forEach(doc => {
+                batch.delete(doc.ref);
+              });
+              await batch.commit();
+            }
+
+            const keysToRemove = [];
+            for (let i = 0; i < localStorage.length; i++) {
+              const key = localStorage.key(i);
+              if (key.startsWith("sesi_app_")) {
+                try {
+                  const item = JSON.parse(localStorage.getItem(key));
+                  if (item.chaveTurma === chaveTurma) {
+                    keysToRemove.push(key);
+                  }
+                } catch (e) {}
+              }
+            }
+            keysToRemove.forEach(k => localStorage.removeItem(k));
+
+            showToast(`Todas as entregas da turma ${ano}º${turma} (${turno}) foram apagadas.`, "success");
+            carregarEntregasProfessor();
+          } catch (err) {
+            console.error("Erro ao limpar turma:", err);
+            showToast("Erro ao excluir entregas da turma.", "error");
+          }
+        }
+      );
     }
 
     // =========================================================================
@@ -1365,10 +1747,15 @@
               </div>
               <p class="text-xs text-slate-400 mt-1">Integrantes: <strong class="text-slate-200">${eq.integrantes.join(", ")}</strong></p>
             </div>
-            <div class="flex items-center gap-1.5">
-              ${stD1Badge}
-              ${stD2Badge}
-              ${stD3Badge}
+            <div class="flex items-center gap-2">
+              <div class="flex items-center gap-1.5">
+                ${stD1Badge}
+                ${stD2Badge}
+                ${stD3Badge}
+              </div>
+              <button onclick="excluirEquipe('${eq.idDoc}')" title="Excluir Equipe" class="bg-red-950/80 hover:bg-red-900 text-red-300 border border-red-800/60 text-xs px-2.5 py-1 rounded-lg transition flex items-center gap-1 font-medium active:scale-95">
+                <i class="fa-solid fa-trash-can"></i> Excluir
+              </button>
             </div>
           </div>
 
