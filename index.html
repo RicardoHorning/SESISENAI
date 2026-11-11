@@ -1593,6 +1593,43 @@
       } else if (timerPitchSegundos === 0) {
         display.className = "font-mono text-4xl md:text-5xl font-black text-red-500 tracking-wider bg-[#001222] px-6 py-2 rounded-2xl border border-red-500/80 animate-bounce";
       } else {
+        display.className = "font-mono text-4xl md:text-5xl font-black text-purple-300 tracking-wider bg-[#001222] px-6 py-2 rounded-2xl border border-purple-500/40 shadow-inner";
+      }
+    }
+
+    function iniciarTimerPitch() {
+      if (timerPitchInterval) return;
+      if (timerPitchSegundos === 0) timerPitchSegundos = 180;
+
+      timerPitchInterval = setInterval(() => {
+        if (timerPitchSegundos > 0) {
+          timerPitchSegundos--;
+          atualizarDisplayTimer();
+        } else {
+          clearInterval(timerPitchInterval);
+          timerPitchInterval = null;
+          showToast("Tempo esgotado para o Pitch da Equipe!", "warning");
+        }
+      }, 1000);
+
+      showToast("Cronômetro de 3 minutos iniciado!", "info");
+    }
+
+    function pausarTimerPitch() {
+      if (timerPitchInterval) {
+        clearInterval(timerPitchInterval);
+        timerPitchInterval = null;
+        showToast("Cronômetro pausado.", "info");
+      }
+    }
+
+    function resetarTimerPitch() {
+      pausarTimerPitch();
+      timerPitchSegundos = 180;
+      atualizarDisplayTimer();
+      showToast("Cronômetro reiniciado para 03:00.", "info");
+    }
+
     function reiniciarNovoProjeto() {
       equipeSessao = null;
       voltarInicio();
