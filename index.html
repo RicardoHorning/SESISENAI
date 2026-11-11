@@ -479,6 +479,112 @@
 
   </main>
 
+  <!-- MODAL DE EDIÇÃO DE PROJETO (MÓDULO PROFESSOR) -->
+  <div id="modal-prof-editar" class="fixed inset-0 bg-[#001122]/90 backdrop-blur-md flex items-center justify-center p-4 z-50 hidden transition-opacity">
+    <div class="bg-sesi-cardBg border border-sky-500/50 rounded-2xl max-w-2xl w-full p-6 md:p-8 space-y-5 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+      
+      <button onclick="fecharModalEditarProf()" class="absolute top-4 right-4 text-slate-400 hover:text-white bg-sesi-navy p-2 rounded-xl border border-sesi-cardBorder">
+        <i class="fa-solid fa-xmark text-lg"></i>
+      </button>
+
+      <div class="flex items-center gap-3 border-b border-sesi-cardBorder pb-4">
+        <div class="p-3 bg-amber-500/10 text-amber-400 rounded-xl text-xl border border-amber-500/30">
+          <i class="fa-solid fa-pen-to-square"></i>
+        </div>
+        <div>
+          <span class="text-[10px] font-bold text-amber-400 uppercase tracking-widest block">Edição Administrativa do Professor</span>
+          <h3 class="text-xl font-bold text-white">Editar Dados e Vínculo de Turma</h3>
+        </div>
+      </div>
+
+      <form id="form-editar-prof" onsubmit="salvarEdicaoProfessor(event)" class="space-y-5 text-xs">
+        <input type="hidden" id="edit-id-original">
+
+        <!-- Reorganização da Turma -->
+        <div class="p-4 bg-[#001222] rounded-xl border border-sesi-cardBorder space-y-3">
+          <span class="text-[10px] font-bold uppercase tracking-wider text-sky-400 block">Corrigir Vínculo da Turma *</span>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <div>
+              <label class="block text-slate-400 mb-1">Ano / Série</label>
+              <select id="edit-ano" required class="w-full bg-sesi-navy border border-sesi-cardBorder rounded-lg p-2.5 text-slate-200 focus:border-sky-400 focus:outline-none">
+                <option value="1">1º Ano — Detetives</option>
+                <option value="2">2º Ano — Sustentabilidade</option>
+                <option value="3">3º Ano — Líderes do Futuro</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-slate-400 mb-1">Turno</label>
+              <select id="edit-turno" required class="w-full bg-sesi-navy border border-sesi-cardBorder rounded-lg p-2.5 text-slate-200 focus:border-sky-400 focus:outline-none">
+                <option value="M">M — Matutino</option>
+                <option value="V">V — Vespertino</option>
+                <option value="N">N — Noturno</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-slate-400 mb-1">Turma</label>
+              <select id="edit-turma" required class="w-full bg-sesi-navy border border-sesi-cardBorder rounded-lg p-2.5 text-slate-200 focus:border-sky-400 focus:outline-none">
+                <option value="A">Turma A</option>
+                <option value="B">Turma B</option>
+                <option value="C">Turma C</option>
+                <option value="D">Turma D</option>
+                <option value="E">Turma E</option>
+                <option value="F">Turma F</option>
+                <option value="G">Turma G</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dados da Equipe -->
+        <div class="p-4 bg-[#001222] rounded-xl border border-sesi-cardBorder space-y-3">
+          <span class="text-[10px] font-bold uppercase tracking-wider text-sky-400 block">Identificação e Integrantes</span>
+          <div>
+            <label class="block text-slate-400 mb-1">Nome da Equipe</label>
+            <input type="text" id="edit-equipe" required maxlength="8" class="w-full bg-sesi-navy border border-sesi-cardBorder rounded-lg p-2.5 text-sky-300 font-mono font-bold uppercase focus:border-sky-400 focus:outline-none">
+          </div>
+          <div class="space-y-2">
+            <label class="block text-slate-400">Integrantes</label>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+              <input type="text" id="edit-int-1" required placeholder="1. Integrante" class="bg-sesi-navy border border-sesi-cardBorder rounded-lg p-2 text-slate-200 focus:border-sky-400 focus:outline-none">
+              <input type="text" id="edit-int-2" placeholder="2. Integrante" class="bg-sesi-navy border border-sesi-cardBorder rounded-lg p-2 text-slate-200 focus:border-sky-400 focus:outline-none">
+              <input type="text" id="edit-int-3" placeholder="3. Integrante" class="bg-sesi-navy border border-sesi-cardBorder rounded-lg p-2 text-slate-200 focus:border-sky-400 focus:outline-none">
+              <input type="text" id="edit-int-4" placeholder="4. Integrante" class="bg-sesi-navy border border-sesi-cardBorder rounded-lg p-2 text-slate-200 focus:border-sky-400 focus:outline-none">
+              <input type="text" id="edit-int-5" placeholder="5. Integrante" class="bg-sesi-navy border border-sesi-cardBorder rounded-lg p-2 text-slate-200 focus:border-sky-400 focus:outline-none">
+            </div>
+          </div>
+        </div>
+
+        <!-- Edição Direta de Respostas -->
+        <div class="p-4 bg-[#001222] rounded-xl border border-sesi-cardBorder space-y-3">
+          <span class="text-[10px] font-bold uppercase tracking-wider text-sky-400 block">Conteúdo das Entregas</span>
+          <div class="space-y-2">
+            <label class="block text-amber-400 font-semibold">Fase 1 (Resposta 1 & 2):</label>
+            <input type="text" id="edit-f1-q1" placeholder="Pergunta 1..." class="w-full bg-sesi-navy border border-sesi-cardBorder rounded-lg p-2 text-slate-200 focus:border-sky-400 focus:outline-none">
+            <textarea id="edit-f1-q2" rows="2" placeholder="Pergunta 2..." class="w-full bg-sesi-navy border border-sesi-cardBorder rounded-lg p-2 text-slate-200 focus:border-sky-400 focus:outline-none"></textarea>
+          </div>
+          <div class="space-y-2 pt-2 border-t border-sesi-cardBorder">
+            <label class="block text-amber-400 font-semibold">Fase 2 (Resposta 1 & 2):</label>
+            <input type="text" id="edit-f2-q1" placeholder="Pergunta 1..." class="w-full bg-sesi-navy border border-sesi-cardBorder rounded-lg p-2 text-slate-200 focus:border-sky-400 focus:outline-none">
+            <textarea id="edit-f2-q2" rows="2" placeholder="Pergunta 2..." class="w-full bg-sesi-navy border border-sesi-cardBorder rounded-lg p-2 text-slate-200 focus:border-sky-400 focus:outline-none"></textarea>
+          </div>
+          <div class="space-y-2 pt-2 border-t border-sesi-cardBorder">
+            <label class="block text-purple-400 font-semibold">Fase 3 (Pitch):</label>
+            <textarea id="edit-f3-q1" rows="2" placeholder="Roteiro do Pitch..." class="w-full bg-sesi-navy border border-sesi-cardBorder rounded-lg p-2 text-slate-200 focus:border-purple-400 focus:outline-none"></textarea>
+          </div>
+        </div>
+
+        <div class="flex gap-3 pt-2">
+          <button type="button" onclick="fecharModalEditarProf()" class="w-1/3 bg-sesi-navy hover:bg-sesi-primary text-slate-300 font-semibold py-3 rounded-xl transition border border-sesi-cardBorder">
+            Cancelar
+          </button>
+          <button type="submit" class="w-2/3 bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-white font-bold py-3 rounded-xl transition shadow-lg flex items-center justify-center gap-2">
+            <i class="fa-solid fa-floppy-disk"></i> Salvar Alterações do Professor
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <!-- MODAL DE DOSSIÊ COMPLETO DA FÁBRICA ECOTECH -->
   <div id="modal-dossie-fabrica" class="fixed inset-0 bg-[#001122]/90 backdrop-blur-md flex items-center justify-center p-4 z-50 hidden transition-opacity">
     <div class="bg-sesi-cardBg border border-sky-500/50 rounded-2xl max-w-2xl w-full p-6 md:p-8 space-y-5 shadow-2xl relative max-h-[90vh] overflow-y-auto">
@@ -1848,6 +1954,9 @@
                 ${stD2Badge}
                 ${stD3Badge}
               </div>
+              <button onclick="abrirModalEditarProf('${eq.idDoc}')" title="Editar Projeto / Mudar Turma" class="bg-sky-950/80 hover:bg-sky-900 text-sky-300 border border-sky-800/60 text-xs px-2.5 py-1 rounded-lg transition flex items-center gap-1 font-medium active:scale-95">
+                <i class="fa-solid fa-pen-to-square"></i> Editar
+              </button>
               ${btnBloqueio}
               <button onclick="excluirEquipe('${eq.idDoc}')" title="Excluir Equipe" class="bg-red-950/80 hover:bg-red-900 text-red-300 border border-red-800/60 text-xs px-2.5 py-1 rounded-lg transition flex items-center gap-1 font-medium active:scale-95">
                 <i class="fa-solid fa-trash-can"></i> Excluir
@@ -1992,6 +2101,146 @@
 
       showToast("Dados de teste enviados para o Firebase!", "success");
       carregarEntregasProfessor();
+    }
+
+    // =========================================================================
+    // MODAL E LÓGICA DE EDIÇÃO PELO PROFESSOR
+    // =========================================================================
+    let registroEmEdicao = null;
+
+    async function abrirModalEditarProf(idDoc) {
+      registroEmEdicao = null;
+
+      if (modoFirebase) {
+        try {
+          const docRef = await db.collection("entregas_sesi").doc(idDoc).get();
+          if (docRef.exists) registroEmEdicao = docRef.data();
+        } catch (e) {
+          console.error(e);
+        }
+      }
+
+      if (!registroEmEdicao) {
+        const itemLocal = localStorage.getItem(`sesi_app_${idDoc}`);
+        if (itemLocal) registroEmEdicao = JSON.parse(itemLocal);
+      }
+
+      if (!registroEmEdicao) {
+        showToast("Registro da equipe não localizado.", "error");
+        return;
+      }
+
+      document.getElementById('edit-id-original').value = idDoc;
+      document.getElementById('edit-ano').value = registroEmEdicao.ano || '1';
+      document.getElementById('edit-turno').value = registroEmEdicao.turno || 'M';
+      document.getElementById('edit-turma').value = registroEmEdicao.turma || 'A';
+      document.getElementById('edit-equipe').value = registroEmEdicao.equipe || '';
+
+      const ints = registroEmEdicao.integrantes || [];
+      document.getElementById('edit-int-1').value = ints[0] || '';
+      document.getElementById('edit-int-2').value = ints[1] || '';
+      document.getElementById('edit-int-3').value = ints[2] || '';
+      document.getElementById('edit-int-4').value = ints[3] || '';
+      document.getElementById('edit-int-5').value = ints[4] || '';
+
+      const d1 = (registroEmEdicao.dia1 && registroEmEdicao.dia1.respostas) ? registroEmEdicao.dia1.respostas : {};
+      const d2 = (registroEmEdicao.dia2 && registroEmEdicao.dia2.respostas) ? registroEmEdicao.dia2.respostas : {};
+      const d3 = (registroEmEdicao.dia3 && registroEmEdicao.dia3.respostas) ? registroEmEdicao.dia3.respostas : {};
+
+      document.getElementById('edit-f1-q1').value = d1.q1 || '';
+      document.getElementById('edit-f1-q2').value = d1.q2 || '';
+      document.getElementById('edit-f2-q1').value = d2.q1 || '';
+      document.getElementById('edit-f2-q2').value = d2.q2 || '';
+      document.getElementById('edit-f3-q1').value = d3.q1 || '';
+
+      document.getElementById('modal-prof-editar').classList.remove('hidden');
+    }
+
+    function fecharModalEditarProf() {
+      document.getElementById('modal-prof-editar').classList.add('hidden');
+      registroEmEdicao = null;
+    }
+
+    async function salvarEdicaoProfessor(e) {
+      e.preventDefault();
+
+      if (!registroEmEdicao) return;
+
+      const idOriginal = document.getElementById('edit-id-original').value;
+      const novoAno = document.getElementById('edit-ano').value;
+      const novoTurno = document.getElementById('edit-turno').value;
+      const novaTurma = document.getElementById('edit-turma').value;
+      const novaEquipe = document.getElementById('edit-equipe').value.toUpperCase().trim();
+
+      const setorObj = obterSetorFabrica(novaEquipe);
+
+      const novosIntegrantes = [
+        document.getElementById('edit-int-1').value,
+        document.getElementById('edit-int-2').value,
+        document.getElementById('edit-int-3').value,
+        document.getElementById('edit-int-4').value,
+        document.getElementById('edit-int-5').value
+      ].filter(i => i.trim() !== "");
+
+      const novoIdDoc = `${novoAno}_${novoTurno}_${novaTurma}_${novaEquipe}`;
+      const novaChaveTurma = `${novoAno}_${novoTurno}_${novaTurma}`;
+
+      const f1_q1 = document.getElementById('edit-f1-q1').value.trim();
+      const f1_q2 = document.getElementById('edit-f1-q2').value.trim();
+      const f2_q1 = document.getElementById('edit-f2-q1').value.trim();
+      const f2_q2 = document.getElementById('edit-f2-q2').value.trim();
+      const f3_q1 = document.getElementById('edit-f3-q1').value.trim();
+
+      const agora = new Date().toLocaleString("pt-BR");
+
+      const registroAtualizado = {
+        ...registroEmEdicao,
+        idDoc: novoIdDoc,
+        chaveTurma: novaChaveTurma,
+        ano: novoAno,
+        turno: novoTurno,
+        turma: novaTurma,
+        equipe: novaEquipe,
+        setorId: setorObj.id,
+        setorNome: setorObj.nome,
+        integrantes: novosIntegrantes,
+        dia1: {
+          concluido: f1_q1 !== '',
+          dataEnvio: f1_q1 !== '' ? (registroEmEdicao.dia1?.dataEnvio || agora) : null,
+          respostas: { q1: f1_q1, q2: f1_q2 }
+        },
+        dia2: {
+          concluido: f2_q1 !== '',
+          dataEnvio: f2_q1 !== '' ? (registroEmEdicao.dia2?.dataEnvio || agora) : null,
+          respostas: { q1: f2_q1, q2: f2_q2 }
+        },
+        dia3: {
+          concluido: f3_q1 !== '',
+          dataEnvio: f3_q1 !== '' ? (registroEmEdicao.dia3?.dataEnvio || agora) : null,
+          respostas: { q1: f3_q1 }
+        }
+      };
+
+      try {
+        if (modoFirebase) {
+          if (idOriginal !== novoIdDoc) {
+            await db.collection("entregas_sesi").doc(idOriginal).delete();
+          }
+          await db.collection("entregas_sesi").doc(novoIdDoc).set(registroAtualizado);
+        }
+
+        if (idOriginal !== novoIdDoc) {
+          localStorage.removeItem(`sesi_app_${idOriginal}`);
+        }
+        localStorage.setItem(`sesi_app_${novoIdDoc}`, JSON.stringify(registroAtualizado));
+
+        fecharModalEditarProf();
+        showToast(`Projeto atualizado e transferido para a turma ${novoAno}º${novaTurma} (${novoTurno}) com sucesso!`, "success");
+        carregarEntregasProfessor();
+      } catch (err) {
+        console.error("Erro ao salvar edição:", err);
+        showToast("Erro ao atualizar o projeto no banco de dados.", "error");
+      }
     }
   </script>
 </body>
