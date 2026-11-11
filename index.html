@@ -1931,34 +1931,35 @@
           : '';
 
         const btnBloqueio = eq.bloqueado
-          ? `<button onclick="alternarBloqueioEquipe('${eq.idDoc}', false)" title="Desbloquear Projeto" class="bg-emerald-950/80 hover:bg-emerald-900 text-emerald-300 border border-emerald-800/60 text-xs px-2.5 py-1 rounded-lg transition flex items-center gap-1 font-medium active:scale-95">
+          ? `<button onclick="alternarBloqueioEquipe('${eq.idDoc}', false)" title="Desbloquear Projeto" class="bg-emerald-950/80 hover:bg-emerald-900 text-emerald-300 border border-emerald-800/60 text-xs px-2.5 py-1.5 rounded-lg transition flex items-center gap-1 font-medium active:scale-95">
               <i class="fa-solid fa-unlock"></i> Desbloquear
              </button>`
-          : `<button onclick="alternarBloqueioEquipe('${eq.idDoc}', true)" title="Bloquear por IA/Plágio" class="bg-amber-950/80 hover:bg-amber-900 text-amber-300 border border-amber-800/60 text-xs px-2.5 py-1 rounded-lg transition flex items-center gap-1 font-medium active:scale-95">
+          : `<button onclick="alternarBloqueioEquipe('${eq.idDoc}', true)" title="Bloquear por IA/Plágio" class="bg-amber-950/80 hover:bg-amber-900 text-amber-300 border border-amber-800/60 text-xs px-2.5 py-1.5 rounded-lg transition flex items-center gap-1 font-medium active:scale-95">
               <i class="fa-solid fa-ban"></i> Bloquear (IA)
              </button>`;
 
         card.innerHTML = `
-          <div class="flex flex-col md:flex-row justify-between md:items-center gap-2 border-b border-sesi-cardBorder pb-3">
+          <div class="flex flex-col md:flex-row justify-between md:items-center gap-3 border-b border-sesi-cardBorder pb-3">
             <div>
               <div class="flex flex-wrap items-center gap-2">
                 <h4 class="text-lg font-bold text-sky-400 font-mono tracking-wider">EQUIPE: ${eq.equipe}</h4>
                 <span class="text-[10px] bg-sesi-navy text-slate-300 px-2.5 py-0.5 rounded-full border border-sesi-cardBorder font-medium">${eq.setorNome || 'Setor Padrão'}</span>
                 ${bloqueadoBadge}
               </div>
-              <p class="text-xs text-slate-400 mt-1">Integrantes: <strong class="text-slate-200">${eq.integrantes.join(", ")}</strong></p>
+              <p class="text-xs text-slate-400 mt-1">Integrantes: <strong class="text-slate-200">${eq.integrantes ? eq.integrantes.join(", ") : 'Não informados'}</strong></p>
             </div>
-            <div class="flex items-center gap-2">
-              <div class="flex items-center gap-1.5">
+            <div class="flex flex-wrap items-center gap-2">
+              <div class="flex items-center gap-1.5 mr-1">
                 ${stD1Badge}
                 ${stD2Badge}
                 ${stD3Badge}
               </div>
-              <button onclick="abrirModalEditarProf('${eq.idDoc}')" title="Editar Projeto / Mudar Turma" class="bg-sky-950/80 hover:bg-sky-900 text-sky-300 border border-sky-800/60 text-xs px-2.5 py-1 rounded-lg transition flex items-center gap-1 font-medium active:scale-95">
-                <i class="fa-solid fa-pen-to-square"></i> Editar
+              <!-- BOTÃO DE EDIÇÃO DESTACADO EM AZUL SKY -->
+              <button onclick="abrirModalEditarProf('${eq.idDoc}')" title="Editar Projeto / Mudar Turma" class="bg-sky-600 hover:bg-sky-500 text-white border border-sky-400/50 text-xs px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 font-bold shadow-md active:scale-95">
+                <i class="fa-solid fa-pen-to-square"></i> Editar Turma/Projeto
               </button>
               ${btnBloqueio}
-              <button onclick="excluirEquipe('${eq.idDoc}')" title="Excluir Equipe" class="bg-red-950/80 hover:bg-red-900 text-red-300 border border-red-800/60 text-xs px-2.5 py-1 rounded-lg transition flex items-center gap-1 font-medium active:scale-95">
+              <button onclick="excluirEquipe('${eq.idDoc}')" title="Excluir Equipe" class="bg-red-950/80 hover:bg-red-900 text-red-300 border border-red-800/60 text-xs px-2.5 py-1.5 rounded-lg transition flex items-center gap-1 font-medium active:scale-95">
                 <i class="fa-solid fa-trash-can"></i> Excluir
               </button>
             </div>
